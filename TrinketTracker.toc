@@ -1,0 +1,18 @@
+## Interface: 120001, 120000
+## Title: |cff00d9ffTrinket Tracker|r
+## Notes: Simple trinket tracker with a blacklist and on-use filtering
+## Author: Aurs
+## Category: Aurs UI
+## Version: 1.3
+## IconTexture: Interface\AddOns\TrinketTracker\Media\icon.png
+## SavedVariables: TTDB
+## SavedVariablesPerCharacter: TTDB
+
+# Libs
+libs\LibStub\LibStub.lua
+libs\LibEditMode\embed.xml
+
+# Main files
+Core.lua
+Functions.lua
+Options.lua
