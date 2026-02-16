@@ -3,10 +3,12 @@
 ## Notes: Simple trinket tracker with a blacklist and on-use filtering
 ## Author: Aurs
 ## Category: Aurs UI
-## Version: 1.3
+## Version: @project-version@
 ## IconTexture: Interface\AddOns\TrinketTracker\Media\icon.png
 ## SavedVariables: TTDB
 ## SavedVariablesPerCharacter: TTDB
+
+## X-Wago-ID: RNLkdDGo
 
 # Libs
 libs\LibStub\LibStub.lua
