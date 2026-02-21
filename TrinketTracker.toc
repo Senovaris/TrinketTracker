@@ -1,4 +1,4 @@
-## Interface: 120001, 120000
+## Interface: 120001
 ## Title: |cff00d9ffTrinket Tracker|r
 ## Notes: Simple trinket tracker with a blacklist and on-use filtering
 ## Author: Aurs
@@ -8,6 +8,7 @@
 ## SavedVariables: TTDB
 ## SavedVariablesPerCharacter: TTDB
 
+## X-Curse-Project-ID: 1443475
 ## X-Wago-ID: RNLkdDGo
 
 # Libs

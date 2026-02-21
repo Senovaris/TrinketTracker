@@ -1,1 +1,1 @@
-# TrinketTracker
+# TrinketTracker for World of Warcraft
