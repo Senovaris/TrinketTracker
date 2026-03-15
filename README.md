@@ -1,10 +1,8 @@
 # Trinket Tracker
 ![Version](https://img.shields.io/github/v/tag/Senovaris/TrinketTracker?label=version)
-![CurseForge](https://img.shields.io/curseforge/dt/your-project-id?label=CurseForge)
+![CurseForge](https://img.shields.io/curseforge/dt/1443475?label=CurseForge)
 
 Lightweight trinket tracker with cooldown display and flexible layout options.
-
-![screenshot](screenshot.png)
 
 ## Features
 - Horizontal and vertical layouts
@@ -19,14 +17,13 @@ Lightweight trinket tracker with cooldown display and flexible layout options.
 | `/tt` `/trt` `/tto` `/trinkettracker` | Opens the options panel |
 
 ## Installation
-- [CurseForge](your-link)
-- [Wago](your-link)
+- [CurseForge](https://www.curseforge.com/wow/addons/trinket-tracker)
 
 ## Notes
 - A trinket must have been in your bags at least once to be blacklistable
 
 ## Support
-[AursUI Discord](your-link)
+[AursUI Discord](https://discord.gg/k4cfNjMjy9)
 
 ## License
 [MIT](LICENSE)
