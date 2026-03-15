@@ -27,44 +27,26 @@ if TTDB.blacklistedTrinkets == nil then
   TTDB.blacklistedTrinkets = {}
 end
 
-container = CreateFrame("Frame", "Trinkets", UIParent, "BackdropTemplate")
+-- Trinkets --
+
+container = CreateFrame("Frame", "Trinkets", UIParent)
 container:SetSize(110, 110)
 container:SetPoint("CENTER", UIParent, "CENTER", TTDB.x, TTDB.y)
-
-container:SetMovable(false)
-container:EnableMouse(false)
-container:RegisterForDrag("LeftButton")
 container:SetClampedToScreen(true)
 
-
-container:SetBackdrop({
-  bgFile = "Interface/Tooltips/UI-Tooltip-Background",
-  edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-  tile = true,
-  tileSize = 16,
-  edgeSize = 16,
-  insets = { left = 2, right = 2, top = 2, bottom = 2 }
-})
-container:SetBackdropColor(0, 0, 0, 0)
-container:SetBackdropBorderColor(0, 0, 0, 0)
-
--- Trinket 1 (top)
 trinket1 = CreateFrame("Frame", nil, container)
-trinket1:SetSize(44, 44)
+trinket1:SetSize(TTDB.iconSize, TTDB.iconSize)
 trinket1:SetPoint("TOP", container, "TOP", 0, 0)
 trinket1.icon = trinket1:CreateTexture(nil, "ARTWORK")
 trinket1.icon:SetAllPoints()
--- trinket1.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92) -- Makes it look more zoomed in "WA style"
 trinket1.cooldown = CreateFrame("Cooldown", nil, trinket1, "CooldownFrameTemplate")
 trinket1.cooldown:SetAllPoints()
 
--- Trinket 2 (bottom)
 trinket2 = CreateFrame("Frame", nil, container)
-trinket2:SetSize(44, 44)
+trinket2:SetSize(TTDB.iconSize, TTDB.iconSize)
 trinket2:SetPoint("TOP", trinket1, "BOTTOM", 0, 0)
 trinket2.icon = trinket2:CreateTexture(nil, "ARTWORK")
 trinket2.icon:SetAllPoints()
--- trinket2.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92) -- Read line 81
 trinket2.cooldown = CreateFrame("Cooldown", nil, trinket2, "CooldownFrameTemplate")
 trinket2.cooldown:SetAllPoints()
 
@@ -123,6 +105,33 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
   end
   UpdateTrinkets()
 end)
+
+-- Added Masque Support --
+
+local function GetMasqueData(button)
+  return {
+    Icon = button.icon,
+    Cooldown = button.cooldown,
+    Border = button.border,
+    Count = button.count,
+  }
+end
+
+local addonName, TT = ...
+
+local Masque = LibStub("Masque", true)
+if Masque then
+  TT.MSQ_Group = Masque:Group("Trinket Tracker")
+  TT.MSQ_Group:AddButton(trinket1, GetMasqueData(trinket1))
+  TT.MSQ_Group:AddButton(trinket2, GetMasqueData(trinket2))
+  TT.MSQ_Group:RegisterCallback(function()
+    local size = TTDB.iconSize
+    if size then
+      trinket1:SetSize(size, size)
+      trinket2:SetSize(size, size)
+    end
+  end)
+end
 
 C_Timer.After(1, function()
   print("|cff00d9ffTrinket Tracker loaded!|r|cffFFFFFF Type /tt, /trt, /tto or /trinkettracker for options|r")

@@ -1,3 +1,5 @@
+local addonName, TT = ...
+
 -- Check for TinyTooltip addons --
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
@@ -83,7 +85,7 @@ sizeLabel:SetTextColor(1, 1, 1, 1)
 
 local sizeSlider = CreateFrame("Slider", nil, panel, "OptionsSliderTemplate")
 sizeSlider:SetPoint("TOPLEFT", 20, -100)
-sizeSlider:SetMinMaxValues(24, 80)
+sizeSlider:SetMinMaxValues(40, 120)
 sizeSlider:SetValue(TTDB.iconSize)
 sizeSlider:SetValueStep(1)
 sizeSlider:SetObeyStepOnDrag(true)
@@ -92,6 +94,9 @@ sizeSlider:SetScript("OnValueChanged", function(_, value)
   TTDB.iconSize = value
   sizeLabel:SetText("Icon Size: " .. value)
   UpdateSizes()
+  if TT.MSQ_Group then
+    TT.MSQ_Group:ReSkin()
+  end
 end)
 
 local layoutLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
