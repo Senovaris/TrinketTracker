@@ -85,7 +85,7 @@ sizeLabel:SetTextColor(1, 1, 1, 1)
 
 local sizeSlider = CreateFrame("Slider", nil, panel, "OptionsSliderTemplate")
 sizeSlider:SetPoint("TOPLEFT", 20, -100)
-sizeSlider:SetMinMaxValues(40, 120)
+sizeSlider:SetMinMaxValues(20, 120)
 sizeSlider:SetValue(TTDB.iconSize)
 sizeSlider:SetValueStep(1)
 sizeSlider:SetObeyStepOnDrag(true)

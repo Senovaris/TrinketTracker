@@ -8,6 +8,7 @@ TTDB = TTDB or {
   blacklistedTrinkets = {
     190958,
     193718,
+    248583,
   },
   _initialized = false,
 }
@@ -16,6 +17,7 @@ if not TTDB._initialized then
   TTDB.blacklistedTrinkets = {
     190958,
     193718,
+    248583,
   }
   TTDB._initialized = true
 end
@@ -27,6 +29,8 @@ if TTDB.blacklistedTrinkets == nil then
   TTDB.blacklistedTrinkets = {}
 end
 
+local addonName, TT = ...
+
 -- Trinkets --
 
 container = CreateFrame("Frame", "Trinkets", UIParent)
@@ -35,7 +39,7 @@ container:SetPoint("CENTER", UIParent, "CENTER", TTDB.x, TTDB.y)
 container:SetClampedToScreen(true)
 
 trinket1 = CreateFrame("Frame", nil, container)
-trinket1:SetSize(TTDB.iconSize, TTDB.iconSize)
+trinket1:SetSize(44, 44)
 trinket1:SetPoint("TOP", container, "TOP", 0, 0)
 trinket1.icon = trinket1:CreateTexture(nil, "ARTWORK")
 trinket1.icon:SetAllPoints()
@@ -43,7 +47,7 @@ trinket1.cooldown = CreateFrame("Cooldown", nil, trinket1, "CooldownFrameTemplat
 trinket1.cooldown:SetAllPoints()
 
 trinket2 = CreateFrame("Frame", nil, container)
-trinket2:SetSize(TTDB.iconSize, TTDB.iconSize)
+trinket2:SetSize(44, 44)
 trinket2:SetPoint("TOP", trinket1, "BOTTOM", 0, 0)
 trinket2.icon = trinket2:CreateTexture(nil, "ARTWORK")
 trinket2.icon:SetAllPoints()
@@ -61,7 +65,6 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
   if event == "PLAYER_LOGIN" then
     UpdateLayout()
     UpdateSizes()
-
 
     local LEM = LibStub('LibEditMode')
 
@@ -94,7 +97,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
 
         container:ClearAllPoints()
         container:SetPoint(TTDB.layouts[layoutName].point or "CENTER", 
-        UIParent, 
+        UIParent,
         TTDB.layouts[layoutName].point or "CENTER",
         TTDB.layouts[layoutName].x or 0,
         TTDB.layouts[layoutName].y or 0)
@@ -102,11 +105,16 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
       LEM:AddFrame(container, onPositionChanged, defaultPosition)
     end
     C_Timer.After(0.5, UpdateTrinkets)
+  elseif event == "PLAYER_ENTERING_WORLD" then
+    UpdateLayout()
+    if TT.MSQ_Group then
+      TT.MSQ_Group:ReSkin()
+    end
+    UpdateTrinkets()
   end
-  UpdateTrinkets()
 end)
 
--- Added Masque Support --
+-- Added Masque Support (Fucks up the size)--
 
 local function GetMasqueData(button)
   return {
@@ -117,19 +125,14 @@ local function GetMasqueData(button)
   }
 end
 
-local addonName, TT = ...
-
 local Masque = LibStub("Masque", true)
 if Masque then
   TT.MSQ_Group = Masque:Group("Trinket Tracker")
   TT.MSQ_Group:AddButton(trinket1, GetMasqueData(trinket1))
   TT.MSQ_Group:AddButton(trinket2, GetMasqueData(trinket2))
   TT.MSQ_Group:RegisterCallback(function()
-    local size = TTDB.iconSize
-    if size then
-      trinket1:SetSize(size, size)
-      trinket2:SetSize(size, size)
-    end
+    UpdateLayout()
+    UpdateSizes()
   end)
 end
 

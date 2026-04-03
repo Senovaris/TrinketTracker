@@ -58,6 +58,7 @@ function UpdateTrinkets()
   UpdateTrinket(trinket1, 13)
   UpdateTrinket(trinket2, 14)
   UpdateTrinketLayout()
+  UpdateSizes()
 end
 
 function UpdateSizes()
