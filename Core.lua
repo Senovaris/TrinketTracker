@@ -6,7 +6,6 @@ TTDB = TTDB or {
   layout = "vertical",
   iconSize = 44,
   blacklistedTrinkets = {
-    190958,
     193718,
     248583,
   },
@@ -15,7 +14,6 @@ TTDB = TTDB or {
 
 if not TTDB._initialized then
   TTDB.blacklistedTrinkets = {
-    190958,
     193718,
     248583,
   }
@@ -63,9 +61,6 @@ eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
   if event == "PLAYER_LOGIN" then
-    UpdateLayout()
-    UpdateSizes()
-
     local LEM = LibStub('LibEditMode')
 
     if LEM then
@@ -96,7 +91,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         end
 
         container:ClearAllPoints()
-        container:SetPoint(TTDB.layouts[layoutName].point or "CENTER", 
+        container:SetPoint(TTDB.layouts[layoutName].point or "CENTER",
         UIParent,
         TTDB.layouts[layoutName].point or "CENTER",
         TTDB.layouts[layoutName].x or 0,
@@ -104,12 +99,19 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
       end)
       LEM:AddFrame(container, onPositionChanged, defaultPosition)
     end
-    C_Timer.After(0.5, UpdateTrinkets)
+
   elseif event == "PLAYER_ENTERING_WORLD" then
     UpdateLayout()
+    UpdateSizes()
     if TT.MSQ_Group then
       TT.MSQ_Group:ReSkin()
     end
+    C_Timer.After(0.5, UpdateTrinkets)
+
+  elseif event == "PLAYER_EQUIPMENT_CHANGED"
+    or event == "BAG_UPDATE_COOLDOWN"
+    or event == "PLAYER_REGEN_ENABLED"
+    or event == "PLAYER_REGEN_DISABLED" then
     UpdateTrinkets()
   end
 end)
