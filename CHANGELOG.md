@@ -1,3 +1,16 @@
+## [1.8] - 2026-04-05
+
+### Added
+- Added a table to global functions and names, for practice and precaution if the project grows
+- Re-added the trinket "So'leahs Secret Technique" to the default blacklist
+- Made the default blacklist forced and it will get updated every reload as it is now.
+
+### Changed 
+- Changed the structure of the DB to not use "_initialized" block as it can reset blacklists.
+
+### Removed
+- Removed redundant code and reworked some structural debt
+
 ## [1.7] - 2026-04-03
 ### Added
 - Added the trinket "Drum of Renewed Bonds" to the default blacklist
@@ -9,14 +22,8 @@
 - Removed the trinket "So'leahs Secret Technique" from the default blacklist 
 
 ## [1.6] - 2026-04-03
-### Added
--
-
 ### Changed
 - Fixed issues with the size after a reload/relog 
-
-### Removed
--
 
 ## [1.5] - 2026-03-15
 ### Added

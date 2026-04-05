@@ -40,13 +40,13 @@ panel:SetBackdrop({
 panel:SetBackdropColor(0, 0, 0, 0.9)
 panel:Hide()
 
-local title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-title:SetPoint("TOP", 0, -10)
-title:SetText("|cff00d9ffTrinket Tracker Options|r")
+local mainTitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+mainTitle:SetPoint("TOP", 0, -10)
+mainTitle:SetText("|cff00d9ffTrinket Tracker Options|r")
 
-local subtitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-subtitle:SetPoint("TOP", 0, -30)
-subtitle:SetText("|cffFFFFFF(Use Edit mode to move)|r")
+local subTitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+subTitle:SetPoint("TOP", 0, -30)
+subTitle:SetText("|cffFFFFFF(Use Edit mode to move)|r")
 
 local closeButton = CreateFrame("Button", nil, panel, "UIPanelCloseButton")
 closeButton:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -5, -5)
@@ -63,7 +63,7 @@ onUseCheck.text:SetTextColor(1, 1, 1, 1)
 onUseCheck:SetChecked(TTDB.onlyShowOnUseTrinkets)
 onUseCheck:SetScript("OnClick", function(self)
   TTDB.onlyShowOnUseTrinkets = self:GetChecked()
-  UpdateTrinkets()
+  TT.UpdateTrinkets()
 end)
 
 local inCombatCheck = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemplate")
@@ -75,7 +75,7 @@ inCombatCheck.text:SetTextColor(1, 1, 1, 1)
 inCombatCheck:SetChecked(TTDB.onlyShowInCombat)
 inCombatCheck:SetScript("OnClick", function(self)
   TTDB.onlyShowInCombat = self:GetChecked()
-  UpdateTrinkets()
+  TT.UpdateTrinkets()
 end)
 
 local sizeLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
@@ -93,7 +93,7 @@ sizeSlider:SetWidth(360)
 sizeSlider:SetScript("OnValueChanged", function(_, value)
   TTDB.iconSize = value
   sizeLabel:SetText("Icon Size: " .. value)
-  UpdateSizes()
+  TT.UpdateSizes()
   if TT.MSQ_Group then
     TT.MSQ_Group:ReSkin()
   end
@@ -115,7 +115,7 @@ local function InitLayoutDropdown()
   info.value = "vertical"
   info.func = function()
     TTDB.layout = "vertical"
-    UpdateLayout()
+    TT.UpdateTrinketLayout()
     UIDropDownMenu_SetText(layoutDropdown, "Vertical")
   end
   info.checked = (TTDB.layout == "vertical")
@@ -125,7 +125,7 @@ local function InitLayoutDropdown()
   info.value = "horizontal"
   info.func = function()
     TTDB.layout = "horizontal"
-    UpdateLayout()
+    TT.UpdateTrinketLayout()
     UIDropDownMenu_SetText(layoutDropdown, "Horizontal")
   end
   info.checked = (TTDB.layout == "horizontal")
@@ -150,25 +150,6 @@ local addButton = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 addButton:SetSize(60, 22)
 addButton:SetPoint("LEFT", blacklistInput, "RIGHT", 5, 0)
 addButton:SetText("Add")
-addButton:SetScript("OnClick", function()
-  local itemID = tonumber(blacklistInput:GetText())
-  if not itemID then
-    print("|cff9B77F7[Trinket Tracker]|r Enter a valid number!")
-    return
-  end
-
-  for _, id in ipairs(TTDB.blacklistedTrinkets) do
-    if id == itemID then
-      print("|cff9B77F7[Trinket Tracker]|r Already blacklisted!")
-      return
-    end
-  end
-
-  table.insert(TTDB.blacklistedTrinkets, itemID)
-  blacklistInput:SetText("")
-  UpdateTrinkets()
-  print("|cff9B77F7[Trinket Tracker]|r Added!")
-end)
 
 local scrollFrame = CreateFrame("ScrollFrame", nil, panel, "UIPanelScrollFrameTemplate")
 scrollFrame:SetSize(360, 230)
@@ -212,10 +193,10 @@ local function UpdateBlacklistDisplay()
   else
     local yOffset = -5
     for i, itemID in ipairs(TTDB.blacklistedTrinkets) do
+      C_Item.RequestLoadItemDataByID(itemID)
 
-      local itemName, _, _, _, _, _, _, _, _, itemTexture = GetItemInfo(itemID)
-      itemName = itemName or "Loading..."
-      itemTexture = itemTexture or "Interface\\Icons\\INV_Misc_QuestionMark"
+      local itemName = C_Item.GetItemNameByID(itemID) or "Loading..."
+      local itemTexture = C_Item.GetItemIconByID(itemID) or "Interface\\Icons\\INV_Misc_QuestionMark"
 
       local entry = CreateFrame("Frame", nil, scrollChild, "BackdropTemplate")
       entry:SetSize(330, 28)
@@ -248,7 +229,7 @@ local function UpdateBlacklistDisplay()
       removeBtn:SetText("Remove")
       removeBtn:SetScript("OnClick", function()
         table.remove(TTDB.blacklistedTrinkets, i)
-        UpdateTrinkets()
+        TT.UpdateTrinkets()
         UpdateBlacklistDisplay()
         print("|cff9B77F7[Trinket Tracker]|r Removed " .. itemName)
       end)
@@ -282,7 +263,7 @@ addButton:SetScript("OnClick", function()
 
   table.insert(TTDB.blacklistedTrinkets, itemID)
   blacklistInput:SetText("")
-  UpdateTrinkets()
+  TT.UpdateTrinkets()
   UpdateBlacklistDisplay()
 
   local itemName = C_Item.GetItemNameByID(itemID) or "Item"
@@ -290,11 +271,11 @@ addButton:SetScript("OnClick", function()
 end)
 
 UpdateBlacklistDisplay()
+
 SLASH_TT1 = "/trt"
-SLASH_TT2 = "/tto"
-SLASH_TT3 = "/trinkettracker"
+SLASH_TT2 = "/trinkettracker"
 if not ttConflict then
-  SLASH_TT4 = "/tt"
+  SLASH_TT3 = "/tt"
 end
 SlashCmdList["TT"] = function()
   panel:SetShown(not panel:IsShown())

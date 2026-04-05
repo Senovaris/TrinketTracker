@@ -1,56 +1,42 @@
-TTDB = TTDB or {
-  x = 0,
-  y = 0,
-  onlyShowOnUseTrinkets = true,
-  onlyShowInCombat = false,
-  layout = "vertical",
-  iconSize = 44,
-  blacklistedTrinkets = {
-    193718,
-    248583,
-  },
-  _initialized = false,
+TTDB = TTDB or {}
+TTDB.iconSize = TTDB.iconSize or 44
+TTDB.layout = TTDB.layout or "vertical"
+TTDB.onlyShowInCombat = TTDB.onlyShowInCombat or false
+TTDB.blacklistedTrinkets = TTDB.blacklistedTrinkets or {}
+TTDB.onlyShowOnUseTrinkets = TTDB.onlyShowOnUseTrinkets ~= nil
+and TTDB.onlyShowOnUseTrinkets or true
+
+-- Well it's the default blacklist :) [TWW -> Midnight] --
+local defaultBlacklist = {
+  190958, -- So'leah [Dungeon]
+  193718, -- Emerald Coach's [Dungeon]
+  248583, -- Drums of Renewed Bonds [Delve]
 }
-
-if not TTDB._initialized then
-  TTDB.blacklistedTrinkets = {
-    193718,
-    248583,
-  }
-  TTDB._initialized = true
-end
-
-if TTDB.iconSize == nil then
-  TTDB.iconSize = 44
-end
-if TTDB.blacklistedTrinkets == nil then
-  TTDB.blacklistedTrinkets = {}
-end
 
 local addonName, TT = ...
 
 -- Trinkets --
 
-container = CreateFrame("Frame", "Trinkets", UIParent)
-container:SetSize(110, 110)
-container:SetPoint("CENTER", UIParent, "CENTER", TTDB.x, TTDB.y)
-container:SetClampedToScreen(true)
+TT.container = CreateFrame("Frame", "Trinkets", UIParent)
+TT.container:SetSize(110, 110)
+TT.container:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+TT.container:SetClampedToScreen(true)
 
-trinket1 = CreateFrame("Frame", nil, container)
-trinket1:SetSize(44, 44)
-trinket1:SetPoint("TOP", container, "TOP", 0, 0)
-trinket1.icon = trinket1:CreateTexture(nil, "ARTWORK")
-trinket1.icon:SetAllPoints()
-trinket1.cooldown = CreateFrame("Cooldown", nil, trinket1, "CooldownFrameTemplate")
-trinket1.cooldown:SetAllPoints()
+TT.trinket1 = CreateFrame("Frame", nil, TT.container)
+TT.trinket1:SetSize(44, 44)
+TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, 0)
+TT.trinket1.icon = TT.trinket1:CreateTexture(nil, "ARTWORK")
+TT.trinket1.icon:SetAllPoints()
+TT.trinket1.cooldown = CreateFrame("Cooldown", nil, TT.trinket1, "CooldownFrameTemplate")
+TT.trinket1.cooldown:SetAllPoints()
 
-trinket2 = CreateFrame("Frame", nil, container)
-trinket2:SetSize(44, 44)
-trinket2:SetPoint("TOP", trinket1, "BOTTOM", 0, 0)
-trinket2.icon = trinket2:CreateTexture(nil, "ARTWORK")
-trinket2.icon:SetAllPoints()
-trinket2.cooldown = CreateFrame("Cooldown", nil, trinket2, "CooldownFrameTemplate")
-trinket2.cooldown:SetAllPoints()
+TT.trinket2 = CreateFrame("Frame", nil, TT.container)
+TT.trinket2:SetSize(44, 44)
+TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, 0)
+TT.trinket2.icon = TT.trinket2:CreateTexture(nil, "ARTWORK")
+TT.trinket2.icon:SetAllPoints()
+TT.trinket2.cooldown = CreateFrame("Cooldown", nil, TT.trinket2, "CooldownFrameTemplate")
+TT.trinket2.cooldown:SetAllPoints()
 
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("PLAYER_LOGIN")
@@ -61,6 +47,23 @@ eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
   if event == "PLAYER_LOGIN" then
+
+    -- Merge Loop
+    for _, defaultID in ipairs(defaultBlacklist) do
+      local found = false
+      for _, userID in ipairs(TTDB.blacklistedTrinkets) do
+        if userID == defaultID then
+          found = true
+          break
+        end
+      end
+      if not found then
+        table.insert(TTDB.blacklistedTrinkets, defaultID)
+      end
+    end
+
+    -- LibEditMode --
+
     local LEM = LibStub('LibEditMode')
 
     if LEM then
@@ -77,7 +80,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
       end
 
       local defaultPosition = {
-        point = 'CENTER',
+        point = "CENTER",
         x = 0,
         y = 0,
       }
@@ -90,33 +93,33 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
           TTDB.layouts[layoutName] = {point = "CENTER", x = 0, y = 0}
         end
 
-        container:ClearAllPoints()
-        container:SetPoint(TTDB.layouts[layoutName].point or "CENTER",
+        TT.container:ClearAllPoints()
+        TT.container:SetPoint(TTDB.layouts[layoutName].point or "CENTER",
         UIParent,
         TTDB.layouts[layoutName].point or "CENTER",
         TTDB.layouts[layoutName].x or 0,
         TTDB.layouts[layoutName].y or 0)
       end)
-      LEM:AddFrame(container, onPositionChanged, defaultPosition)
+      LEM:AddFrame(TT.container, onPositionChanged, defaultPosition)
     end
 
   elseif event == "PLAYER_ENTERING_WORLD" then
-    UpdateLayout()
-    UpdateSizes()
+    TT.UpdateTrinketLayout()
+    TT.UpdateSizes()
     if TT.MSQ_Group then
       TT.MSQ_Group:ReSkin()
     end
-    C_Timer.After(0.5, UpdateTrinkets)
+    C_Timer.After(0.5, TT.UpdateTrinkets)
 
   elseif event == "PLAYER_EQUIPMENT_CHANGED"
     or event == "BAG_UPDATE_COOLDOWN"
     or event == "PLAYER_REGEN_ENABLED"
     or event == "PLAYER_REGEN_DISABLED" then
-    UpdateTrinkets()
+    TT.UpdateTrinkets()
   end
 end)
 
--- Added Masque Support (Fucks up the size)--
+-- Added Masque Support --
 
 local function GetMasqueData(button)
   return {
@@ -130,14 +133,14 @@ end
 local Masque = LibStub("Masque", true)
 if Masque then
   TT.MSQ_Group = Masque:Group("Trinket Tracker")
-  TT.MSQ_Group:AddButton(trinket1, GetMasqueData(trinket1))
-  TT.MSQ_Group:AddButton(trinket2, GetMasqueData(trinket2))
+  TT.MSQ_Group:AddButton(TT.trinket1, GetMasqueData(TT.trinket1))
+  TT.MSQ_Group:AddButton(TT.trinket2, GetMasqueData(TT.trinket2))
   TT.MSQ_Group:RegisterCallback(function()
-    UpdateLayout()
-    UpdateSizes()
+    TT.UpdateTrinketLayout()
+    TT.UpdateSizes()
   end)
 end
 
 C_Timer.After(1, function()
-  print("|cff00d9ffTrinket Tracker loaded!|r|cffFFFFFF Type /tt, /trt, /tto or /trinkettracker for options|r")
+  print("|cff00d9ffTrinket Tracker loaded!|r|cffFFFFFF Type /tt, /trt or /trinkettracker for options|r")
 end)

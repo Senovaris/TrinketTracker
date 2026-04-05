@@ -1,4 +1,6 @@
-function IsOnUseTrinket(slotID)
+local addonName, TT = ...
+
+function TT.IsOnUseTrinket(slotID)
   local itemID = GetInventoryItemID("player", slotID)
   if not itemID then return false end
 
@@ -16,7 +18,7 @@ function IsOnUseTrinket(slotID)
   return false
 end
 
-function UpdateTrinket(frame, slotID)
+function TT.UpdateTrinket(frame, slotID)
   local itemTexture = GetInventoryItemTexture("player", slotID)
   if itemTexture then
     local itemID = GetInventoryItemID("player", slotID)
@@ -30,7 +32,7 @@ function UpdateTrinket(frame, slotID)
     end
 
     if TTDB.onlyShowOnUseTrinkets then
-      if not IsOnUseTrinket(slotID) then
+      if not TT.IsOnUseTrinket(slotID) then
         frame:Hide()
         return
       end
@@ -54,59 +56,42 @@ function UpdateTrinket(frame, slotID)
   end
 end
 
-function UpdateTrinkets()
-  UpdateTrinket(trinket1, 13)
-  UpdateTrinket(trinket2, 14)
-  UpdateTrinketLayout()
-  UpdateSizes()
+function TT.UpdateTrinkets()
+  TT.UpdateTrinket(TT.trinket1, 13)
+  TT.UpdateTrinket(TT.trinket2, 14)
+  TT.UpdateTrinketLayout()
+  TT.UpdateSizes()
 end
 
-function UpdateSizes()
+function TT.UpdateSizes()
   local size = TTDB.iconSize
-  trinket1:SetSize(size, size)
-  trinket2:SetSize(size, size)
+  TT.trinket1:SetSize(size, size)
+  TT.trinket2:SetSize(size, size)
 end
 
 
-function UpdateTrinketLayout()
-  local visible1 = trinket1:IsShown()
-  local visible2 = trinket2:IsShown()
+function TT.UpdateTrinketLayout()
+  local visible1 = TT.trinket1:IsShown()
+  local visible2 = TT.trinket2:IsShown()
 
   if visible1 and not visible2 then
-    trinket1:ClearAllPoints()
-    trinket1:SetPoint("CENTER", container, "CENTER", 0, 0)
+    TT.trinket1:ClearAllPoints()
+    TT.trinket1:SetPoint("CENTER", TT.container, "CENTER", 0, 0)
   elseif visible2 and not visible1 then
-    trinket2:ClearAllPoints()
-    trinket2:SetPoint("CENTER", container, "CENTER", 0, 0)
+    TT.trinket2:ClearAllPoints()
+    TT.trinket2:SetPoint("CENTER", TT.container, "CENTER", 0, 0)
   elseif visible1 and visible2 then
     if TTDB.layout == "vertical" then
-      trinket1:ClearAllPoints()
-      trinket1:SetPoint("TOP", container, "TOP", 0, -5)
-      trinket2:ClearAllPoints()
-      trinket2:SetPoint("TOP", trinket1, "BOTTOM", 0, -5)
+      TT.trinket1:ClearAllPoints()
+      TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, -5)
+      TT.trinket2:ClearAllPoints()
+      TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, -5)
     else
-      trinket2:ClearAllPoints()
-      trinket2:SetPoint("LEFT", container, "LEFT", 5, 0)
-      trinket1:ClearAllPoints()
-      trinket1:SetPoint("LEFT", trinket2, "RIGHT", 5, 0)
+      TT.trinket2:ClearAllPoints()
+      TT.trinket2:SetPoint("LEFT", TT.container, "LEFT", 5, 0)
+      TT.trinket1:ClearAllPoints()
+      TT.trinket1:SetPoint("LEFT", TT.trinket2, "RIGHT", 5, 0)
     end
   end
+  TT.UpdateSizes()
 end
-
-function UpdateLayout()
-  if TTDB.layout == "vertical" then
-    trinket1:ClearAllPoints()
-    trinket1:SetPoint("TOP", container, "TOP", 0, -5)
-    trinket2:ClearAllPoints()
-    trinket2:SetPoint("TOP", trinket1, "BOTTOM", 0, -5)
-  else
-    trinket2:ClearAllPoints()
-    trinket2:SetPoint("LEFT", container, "LEFT", 5, 0)
-    trinket1:ClearAllPoints()
-    trinket1:SetPoint("LEFT", trinket2, "RIGHT", 5, 0)
-  end
-  UpdateSizes()
-  UpdateTrinketLayout()
-end
-
-
