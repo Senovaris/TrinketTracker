@@ -1,3 +1,12 @@
+## [1.8.1] - 2026-04-19
+
+### Changed
+- updated .toc to add 12.0.5.
+- Set default blacklist to current expansion trinkets.
+
+### Removed
+- Removed SavedVariablesPerCharacter
+
 ## [1.8] - 2026-04-05
 
 ### Added

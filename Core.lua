@@ -6,9 +6,8 @@ TTDB.blacklistedTrinkets = TTDB.blacklistedTrinkets or {}
 TTDB.onlyShowOnUseTrinkets = TTDB.onlyShowOnUseTrinkets ~= nil
 and TTDB.onlyShowOnUseTrinkets or true
 
--- Well it's the default blacklist :) [TWW -> Midnight] --
+-- Well it's the default blacklist :) (Will be updated when new trinkets comes out) [Midnight] --
 local defaultBlacklist = {
-  190958, -- So'leah [Dungeon]
   193718, -- Emerald Coach's [Dungeon]
   248583, -- Drums of Renewed Bonds [Delve]
 }
