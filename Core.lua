@@ -10,6 +10,7 @@ and TTDB.onlyShowOnUseTrinkets or true
 TTDB.alertGlow  = TTDB.alertGlow  or "proc"    -- none | proc | pixel | autocast | gold | blue | red
 TTDB.alertSound = TTDB.alertSound or "tts"     -- none | tts | alarm | raidwarning | readycheck | auction | ping
 TTDB.alertMinCD = TTDB.alertMinCD or 30
+if TTDB.combatAlert == nil then TTDB.combatAlert = false end
 
 -- Well it's the default blacklist :) (Will be updated when new trinkets comes out) [Midnight] --
 local defaultBlacklist = {
@@ -186,6 +187,26 @@ function TT.FireAlert(frame)
     TT.ShowAlertGlow(frame)
 end
 
+-- Fire combat-entry alert: sound once, persistent glow on each ready trinket.
+function TT.FireCombatAlert()
+    if not TTDB.combatAlert then return end
+    local fired = false
+    for _, frame in ipairs({ TT.trinket1, TT.trinket2 }) do
+        if frame:IsShown() then
+            local slotID = (frame == TT.trinket1) and 13 or 14
+            local start, duration = GetInventoryItemCooldown("player", slotID)
+            local ready = not (start and duration and start > 0 and duration > 0
+                and (start + duration - GetTime()) > 0.1)
+            if ready then
+                TT.ShowAlertGlow(frame)
+                frame._ttCombatGlow = true
+                fired = true
+            end
+        end
+    end
+    if fired then TT.PlayAlertSound() end
+end
+
 function TT.TestAlert()
     print("|cff00d9ff[Trinket Tracker]|r Test alert fired (glow=" .. tostring(TTDB.alertGlow) .. ", sound=" .. tostring(TTDB.alertSound) .. ")")
     local v1, v2 = TT.trinket1:IsShown(), TT.trinket2:IsShown()
@@ -212,6 +233,8 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
   if event == "UNIT_SPELLCAST_SUCCEEDED" then
     TT.HideAlertGlow(TT.trinket1)
     TT.HideAlertGlow(TT.trinket2)
+    TT.trinket1._ttCombatGlow = nil
+    TT.trinket2._ttCombatGlow = nil
     C_Timer.After(0.1, TT.UpdateTrinkets)
     return
   end
@@ -323,6 +346,13 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
           default = 30,
           formatter = function(v) return v .. "s" end,
         },
+        {
+          kind = LEM.SettingType.Checkbox,
+          name = "Alert on combat entry",
+          get  = function() return TTDB.combatAlert end,
+          set  = function(_, value) TTDB.combatAlert = value end,
+          default = false,
+        },
       })
 
       LEM:AddFrameSettingsButtons(TT.container, {
@@ -341,10 +371,22 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
     end
     C_Timer.After(0.5, TT.UpdateTrinkets)
 
+  elseif event == "PLAYER_REGEN_DISABLED" then
+    TT.UpdateTrinkets()
+    TT.FireCombatAlert()
+
+  elseif event == "PLAYER_REGEN_ENABLED" then
+    -- Combat ended - clear any persistent combat-mode glows.
+    for _, frame in ipairs({ TT.trinket1, TT.trinket2 }) do
+      if frame._ttCombatGlow then
+        TT.HideAlertGlow(frame)
+        frame._ttCombatGlow = nil
+      end
+    end
+    TT.UpdateTrinkets()
+
   elseif event == "PLAYER_EQUIPMENT_CHANGED"
-    or event == "BAG_UPDATE_COOLDOWN"
-    or event == "PLAYER_REGEN_ENABLED"
-    or event == "PLAYER_REGEN_DISABLED" then
+    or event == "BAG_UPDATE_COOLDOWN" then
     TT.UpdateTrinkets()
   end
 end)

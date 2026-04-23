@@ -1,3 +1,13 @@
+## [1.9.1] - 2026-04-22
+
+### Added
+- "Alert on combat entry" Edit Mode checkbox (off by default). When enabled,
+  entering combat with a ready trinket fires the configured sound and a
+  persistent glow that stays on the icon until the trinket is used or
+  combat ends. Re-arms on each new combat entry.
+- Combat-mode glow also engages on a ready transition that occurs while
+  in combat (mid-fight CD reset), so the icon stays lit until use.
+
 ## [1.9.0] - 2026-04-22
 
 ### Added
