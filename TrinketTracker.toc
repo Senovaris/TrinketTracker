@@ -3,7 +3,7 @@
 ## Notes: Simple trinket tracker with a blacklist, on-use filtering, and ready alerts
 ## Author: Aurs (alerts added by Tyler)
 ## Category: Aurs UI
-## Version: 1.9.1
+## Version: 1.9.2
 ## IconTexture: Interface\AddOns\TrinketTracker\Media\icon.png
 ## SavedVariables: TTDB
 

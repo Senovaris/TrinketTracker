@@ -43,6 +43,31 @@ TT.trinket2.icon:SetAllPoints()
 TT.trinket2.cooldown = CreateFrame("Cooldown", nil, TT.trinket2, "CooldownFrameTemplate")
 TT.trinket2.cooldown:SetAllPoints()
 
+-- Tooltip on hover
+local function AttachTooltip(frame, slotID)
+    frame:EnableMouse(true)
+    frame:SetScript("OnEnter", function(self)
+        if UnitAffectingCombat("player") then return end
+        if not GetInventoryItemID("player", slotID) then return end
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetInventoryItem("player", slotID)
+        GameTooltip:Show()
+    end)
+    frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
+end
+AttachTooltip(TT.trinket1, 13)
+AttachTooltip(TT.trinket2, 14)
+
+-- If the tooltip is showing on a trinket icon when combat starts, hide it.
+local tooltipCombatFrame = CreateFrame("Frame")
+tooltipCombatFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+tooltipCombatFrame:SetScript("OnEvent", function()
+    local owner = GameTooltip:GetOwner()
+    if owner == TT.trinket1 or owner == TT.trinket2 then
+        GameTooltip:Hide()
+    end
+end)
+
 -- =========================================================================
 -- Alert module
 -- =========================================================================

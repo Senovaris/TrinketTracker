@@ -1,3 +1,10 @@
+## [1.9.2] - 2026-04-22
+
+### Added
+- Item tooltip on hover for each trinket icon. Tooltip is suppressed
+  while in combat, and is force-hidden if combat begins while a trinket
+  tooltip is currently showing.
+
 ## [1.9.1] - 2026-04-22
 
 ### Added
