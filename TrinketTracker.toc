@@ -13,6 +13,7 @@
 # Libs
 libs\LibStub\LibStub.lua
 libs\LibEditMode\embed.xml
+libs\LibCustomGlow\LibCustomGlow-1.0.lua
 
 # Main files
 Core.lua

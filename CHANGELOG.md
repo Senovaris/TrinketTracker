@@ -1,3 +1,9 @@
+## [1.9] - 2026-04-28
+
+### Added
+- Added a slider to change the gap between the icons
+- Glow when trinket gets off cooldown for 3 seconds.
+
 ## [1.8.1] - 2026-04-19
 
 ### Changed

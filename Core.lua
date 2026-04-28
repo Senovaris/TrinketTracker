@@ -5,6 +5,7 @@ TTDB.onlyShowInCombat = TTDB.onlyShowInCombat or false
 TTDB.blacklistedTrinkets = TTDB.blacklistedTrinkets or {}
 TTDB.onlyShowOnUseTrinkets = TTDB.onlyShowOnUseTrinkets ~= nil
 and TTDB.onlyShowOnUseTrinkets or true
+TTDB.gap = TTDB.gap or 1
 
 -- Well it's the default blacklist :) (Will be updated when new trinkets comes out) [Midnight] --
 local defaultBlacklist = {
@@ -142,4 +143,9 @@ end
 
 C_Timer.After(1, function()
   print("|cff00d9ffTrinket Tracker loaded!|r|cffFFFFFF Type /tt, /trt or /trinkettracker for options|r")
+  C_Timer.NewTicker(0.1, function()
+    if TT.UpdateTrinkets then TT.UpdateTrinkets() end
+  end)
 end)
+
+

@@ -50,6 +50,21 @@ function TT.UpdateTrinket(frame, slotID)
       frame.cooldown:SetCooldown(start, duration)
     end
 
+    local isReady = not (start and duration and start > 0 and duration > 1.5)
+
+    if frame._ttWasReady == nil then
+      frame._ttWasReady = isReady
+    else
+      local LCG = LibStub and LibStub("LibCustomGlow-1.0", true)
+      if isReady and not frame._ttWasReady then
+        if LCG then LCG.ButtonGlow_Start(frame, {1, 1, 1, 1}, 0.30) end
+        C_Timer.After(3, function()
+          if LCG then LCG.ButtonGlow_Stop(frame) end
+        end)
+      end
+      frame._ttWasReady = isReady
+    end
+
     frame:Show()
   else
     frame:Hide()
@@ -83,14 +98,14 @@ function TT.UpdateTrinketLayout()
   elseif visible1 and visible2 then
     if TTDB.layout == "vertical" then
       TT.trinket1:ClearAllPoints()
-      TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, -5)
+      TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, -3)
       TT.trinket2:ClearAllPoints()
-      TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, -5)
+      TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, -TTDB.gap)
     else
       TT.trinket2:ClearAllPoints()
-      TT.trinket2:SetPoint("LEFT", TT.container, "LEFT", 5, 0)
+      TT.trinket2:SetPoint("LEFT", TT.container, "LEFT", 3, 0)
       TT.trinket1:ClearAllPoints()
-      TT.trinket1:SetPoint("LEFT", TT.trinket2, "RIGHT", 5, 0)
+      TT.trinket1:SetPoint("LEFT", TT.trinket2, "RIGHT", TTDB.gap, 0)
     end
   end
   TT.UpdateSizes()

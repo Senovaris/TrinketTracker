@@ -25,7 +25,7 @@ end
 -- Might move the above to Core.lua but this works --
 
 local panel = CreateFrame("Frame", "TrinketTracker", UIParent, BackdropTemplateMixin and "BackdropTemplate")
-panel:SetSize(430, 450)
+panel:SetSize(430, 550)
 panel:SetPoint("CENTER")
 panel:SetMovable(true)
 panel:EnableMouse(true)
@@ -99,6 +99,27 @@ sizeSlider:SetScript("OnValueChanged", function(_, value)
   end
 end)
 
+local gapLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+gapLabel:SetPoint("TOPLEFT", 20, -165)
+gapLabel:SetText("Gap Size: " .. TTDB.gap)
+gapLabel:SetTextColor(1, 1, 1, 1)
+
+local gapSlider = CreateFrame("Slider", nil, panel, "OptionsSliderTemplate")
+gapSlider:SetPoint("TOPLEFT", 20, -180)
+gapSlider:SetMinMaxValues(1, 50)
+gapSlider:SetValue(TTDB.gap)
+gapSlider:SetValueStep(1)
+gapSlider:SetObeyStepOnDrag(true)
+gapSlider:SetWidth(360)
+gapSlider:SetScript("OnValueChanged", function(_, value)
+  TTDB.gap = value
+  gapLabel:SetText("Gap Size: " .. value)
+  TT.UpdateTrinketLayout()
+  if TT.MSQ_Group then
+    TT.MSQ_Group:ReSkin()
+  end
+end)
+
 local layoutLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 layoutLabel:SetPoint("TOPLEFT", 20, -140)
 layoutLabel:SetText("Layout:")
@@ -136,13 +157,13 @@ UIDropDownMenu_Initialize(layoutDropdown, InitLayoutDropdown)
 UIDropDownMenu_SetText(layoutDropdown, TTDB.layout == "vertical" and "Vertical" or "Horizontal")
 
 local blacklistHeading = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-blacklistHeading:SetPoint("TOPLEFT", 20, -175)
+blacklistHeading:SetPoint("TOPLEFT", 20, -210)
 blacklistHeading:SetText("Blacklist Trinkets")
 blacklistHeading:SetTextColor(1, 1, 1, 1)
 
 local blacklistInput = CreateFrame("EditBox", nil, panel, "InputBoxTemplate")
 blacklistInput:SetSize(200, 20)
-blacklistInput:SetPoint("TOPLEFT", 20, -195)
+blacklistInput:SetPoint("TOPLEFT", 20, -225)
 blacklistInput:SetAutoFocus(false)
 blacklistInput:SetMaxLetters(100)
 
@@ -153,7 +174,7 @@ addButton:SetText("Add")
 
 local scrollFrame = CreateFrame("ScrollFrame", nil, panel, "UIPanelScrollFrameTemplate")
 scrollFrame:SetSize(360, 230)
-scrollFrame:SetPoint("TOPLEFT", 20, -215)
+scrollFrame:SetPoint("TOPLEFT", 20, -245)
 
 local scrollChild = CreateFrame("Frame", nil, scrollFrame)
 scrollChild:SetSize(340, 1)
@@ -285,6 +306,7 @@ panel:SetScript("OnShow", function()
   onUseCheck:SetChecked(TTDB.onlyShowOnUseTrinkets)
   inCombatCheck:SetChecked(TTDB.onlyShowInCombat)
   sizeSlider:SetValue(TTDB.iconSize)
+  gapSlider:SetValue(TTDB.gap)
   UIDropDownMenu_SetText(layoutDropdown, TTDB.layout == "vertical" and "Vertical" or "Horizontal")
   UpdateBlacklistDisplay()
 end)
