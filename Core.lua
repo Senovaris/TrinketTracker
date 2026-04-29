@@ -1,12 +1,3 @@
-TTDB = TTDB or {}
-TTDB.iconSize = TTDB.iconSize or 44
-TTDB.layout = TTDB.layout or "vertical"
-TTDB.onlyShowInCombat = TTDB.onlyShowInCombat or false
-TTDB.blacklistedTrinkets = TTDB.blacklistedTrinkets or {}
-TTDB.onlyShowOnUseTrinkets = TTDB.onlyShowOnUseTrinkets ~= nil
-and TTDB.onlyShowOnUseTrinkets or true
-TTDB.gap = TTDB.gap or 1
-
 -- Well it's the default blacklist :) (Will be updated when new trinkets comes out) [Midnight] --
 local defaultBlacklist = {
   193718, -- Emerald Coach's [Dungeon]
@@ -45,8 +36,21 @@ eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 eventFrame:RegisterEvent("BAG_UPDATE_COOLDOWN")
 eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-eventFrame:SetScript("OnEvent", function(self, event, ...)
-  if event == "PLAYER_LOGIN" then
+eventFrame:RegisterEvent("ADDON_LOADED")
+eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
+  if event == "ADDON_LOADED" and arg1 == "TrinketTracker" then
+    TTDB = TTDB or {}
+    TTDB.iconSize = TTDB.iconSize or 44
+    TTDB.layout = TTDB.layout or "vertical"
+    TTDB.onlyShowInCombat = TTDB.onlyShowInCombat or false
+    TTDB.blacklistedTrinkets = TTDB.blacklistedTrinkets or {}
+    if TTDB.onlyShowOnUseTrinkets == nil then
+      TTDB.onlyShowOnUseTrinkets = true
+    end
+    TTDB.gap = TTDB.gap or 1
+    self:UnregisterEvent("ADDON_LOADED")
+
+  elseif event == "PLAYER_LOGIN" then
 
     -- Merge Loop
     for _, defaultID in ipairs(defaultBlacklist) do

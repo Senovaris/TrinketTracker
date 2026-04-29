@@ -1,3 +1,8 @@
+## [1.9.1] - 2026-04-29
+
+### Fixed
+- Fixed issues with the new gap feature that was missed while testing
+
 ## [1.9] - 2026-04-28
 
 ### Added

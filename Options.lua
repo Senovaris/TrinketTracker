@@ -60,7 +60,7 @@ onUseCheck.text = onUseCheck:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 onUseCheck.text:SetPoint("LEFT", onUseCheck, "RIGHT", 5, 0)
 onUseCheck.text:SetText("Only show On-Use Trinkets")
 onUseCheck.text:SetTextColor(1, 1, 1, 1)
-onUseCheck:SetChecked(TTDB.onlyShowOnUseTrinkets)
+onUseCheck:SetChecked(false)
 onUseCheck:SetScript("OnClick", function(self)
   TTDB.onlyShowOnUseTrinkets = self:GetChecked()
   TT.UpdateTrinkets()
@@ -72,7 +72,6 @@ inCombatCheck.text = inCombatCheck:CreateFontString(nil, "OVERLAY", "GameFontNor
 inCombatCheck.text:SetPoint("LEFT", inCombatCheck, "RIGHT", 5, 0)
 inCombatCheck.text:SetText("Only show in combat")
 inCombatCheck.text:SetTextColor(1, 1, 1, 1)
-inCombatCheck:SetChecked(TTDB.onlyShowInCombat)
 inCombatCheck:SetScript("OnClick", function(self)
   TTDB.onlyShowInCombat = self:GetChecked()
   TT.UpdateTrinkets()
@@ -80,13 +79,12 @@ end)
 
 local sizeLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 sizeLabel:SetPoint("TOPLEFT", 20, -80)
-sizeLabel:SetText("Icon Size: " .. TTDB.iconSize)
+sizeLabel:SetText("Icon Size")
 sizeLabel:SetTextColor(1, 1, 1, 1)
 
 local sizeSlider = CreateFrame("Slider", nil, panel, "OptionsSliderTemplate")
 sizeSlider:SetPoint("TOPLEFT", 20, -100)
 sizeSlider:SetMinMaxValues(20, 120)
-sizeSlider:SetValue(TTDB.iconSize)
 sizeSlider:SetValueStep(1)
 sizeSlider:SetObeyStepOnDrag(true)
 sizeSlider:SetWidth(360)
@@ -101,13 +99,12 @@ end)
 
 local gapLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 gapLabel:SetPoint("TOPLEFT", 20, -165)
-gapLabel:SetText("Gap Size: " .. TTDB.gap)
+gapLabel:SetText("Gap Size")
 gapLabel:SetTextColor(1, 1, 1, 1)
 
 local gapSlider = CreateFrame("Slider", nil, panel, "OptionsSliderTemplate")
 gapSlider:SetPoint("TOPLEFT", 20, -180)
 gapSlider:SetMinMaxValues(1, 50)
-gapSlider:SetValue(TTDB.gap)
 gapSlider:SetValueStep(1)
 gapSlider:SetObeyStepOnDrag(true)
 gapSlider:SetWidth(360)
@@ -139,7 +136,6 @@ local function InitLayoutDropdown()
     TT.UpdateTrinketLayout()
     UIDropDownMenu_SetText(layoutDropdown, "Vertical")
   end
-  info.checked = (TTDB.layout == "vertical")
   UIDropDownMenu_AddButton(info)
 
   info.text = "Horizontal"
@@ -149,12 +145,10 @@ local function InitLayoutDropdown()
     TT.UpdateTrinketLayout()
     UIDropDownMenu_SetText(layoutDropdown, "Horizontal")
   end
-  info.checked = (TTDB.layout == "horizontal")
   UIDropDownMenu_AddButton(info)
 end
 
 UIDropDownMenu_Initialize(layoutDropdown, InitLayoutDropdown)
-UIDropDownMenu_SetText(layoutDropdown, TTDB.layout == "vertical" and "Vertical" or "Horizontal")
 
 local blacklistHeading = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 blacklistHeading:SetPoint("TOPLEFT", 20, -210)
@@ -291,8 +285,6 @@ addButton:SetScript("OnClick", function()
   print("|cff00FFFF[Trinket Tracker]|r Added " .. itemName .. " (ID: " .. itemID .. ")!")
 end)
 
-UpdateBlacklistDisplay()
-
 SLASH_TT1 = "/trt"
 SLASH_TT2 = "/trinkettracker"
 if not ttConflict then
@@ -303,10 +295,12 @@ SlashCmdList["TT"] = function()
 end
 
 panel:SetScript("OnShow", function()
+  sizeLabel:SetText("Icon Size: " .. TTDB.iconSize)
+  sizeSlider:SetValue(TTDB.iconSize)
+  gapLabel:SetText("Gap Size: " .. TTDB.gap)
+  gapSlider:SetValue(TTDB.gap)
   onUseCheck:SetChecked(TTDB.onlyShowOnUseTrinkets)
   inCombatCheck:SetChecked(TTDB.onlyShowInCombat)
-  sizeSlider:SetValue(TTDB.iconSize)
-  gapSlider:SetValue(TTDB.gap)
   UIDropDownMenu_SetText(layoutDropdown, TTDB.layout == "vertical" and "Vertical" or "Horizontal")
   UpdateBlacklistDisplay()
 end)
