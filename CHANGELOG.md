@@ -1,3 +1,11 @@
+## [2.0.0] - 2026-05-02
+### Added
+- Glow options panel
+- Tabs into the options panel
+
+### Changed
+- Reworked the whole options panel to make it feel a bit more standalone
+
 ## [1.9.1] - 2026-04-29
 
 ### Fixed

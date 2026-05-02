@@ -55,16 +55,11 @@ function TT.UpdateTrinket(frame, slotID)
     if frame._ttWasReady == nil then
       frame._ttWasReady = isReady
     else
-      local LCG = LibStub and LibStub("LibCustomGlow-1.0", true)
       if isReady and not frame._ttWasReady then
-        if LCG then LCG.ButtonGlow_Start(frame, {1, 1, 1, 1}, 0.30) end
-        C_Timer.After(3, function()
-          if LCG then LCG.ButtonGlow_Stop(frame) end
-        end)
+        TT.ShowReadyGlow(frame)
       end
       frame._ttWasReady = isReady
     end
-
     frame:Show()
   else
     frame:Hide()

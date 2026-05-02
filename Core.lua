@@ -17,7 +17,7 @@ TT.trinket1 = CreateFrame("Frame", nil, TT.container)
 TT.trinket1:SetSize(44, 44)
 TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, 0)
 TT.trinket1.icon = TT.trinket1:CreateTexture(nil, "ARTWORK")
-TT.trinket1.icon:SetAllPoints()
+TT.trinket1.icon:SetAllPoints(TT.trinket1)
 TT.trinket1.cooldown = CreateFrame("Cooldown", nil, TT.trinket1, "CooldownFrameTemplate")
 TT.trinket1.cooldown:SetAllPoints()
 
@@ -25,7 +25,7 @@ TT.trinket2 = CreateFrame("Frame", nil, TT.container)
 TT.trinket2:SetSize(44, 44)
 TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, 0)
 TT.trinket2.icon = TT.trinket2:CreateTexture(nil, "ARTWORK")
-TT.trinket2.icon:SetAllPoints()
+TT.trinket2.icon:SetAllPoints(TT.trinket2)
 TT.trinket2.cooldown = CreateFrame("Cooldown", nil, TT.trinket2, "CooldownFrameTemplate")
 TT.trinket2.cooldown:SetAllPoints()
 
@@ -48,6 +48,11 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
       TTDB.onlyShowOnUseTrinkets = true
     end
     TTDB.gap = TTDB.gap or 1
+    TTDB.glowType = TTDB.glowType or "button"
+    TTDB.glowSettings = TTDB.glowSettings or {}
+    TTDB.glowSettings.button   = TTDB.glowSettings.button   or { r=0, g=0.85, b=1, frequency=0.25 }
+    TTDB.glowSettings.pixel    = TTDB.glowSettings.pixel    or { r=0, g=0.85, b=1, frequency=0.25, lines=8, thickness=2 }
+    TTDB.glowSettings.autocast = TTDB.glowSettings.autocast or { r=0, g=0.85, b=1, frequency=0.125, particles=4 }
     self:UnregisterEvent("ADDON_LOADED")
 
   elseif event == "PLAYER_LOGIN" then

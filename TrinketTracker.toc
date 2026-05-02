@@ -17,5 +17,6 @@ libs\LibCustomGlow\LibCustomGlow-1.0.lua
 
 # Main files
 Core.lua
+Glow.lua
 Functions.lua
 Options.lua
