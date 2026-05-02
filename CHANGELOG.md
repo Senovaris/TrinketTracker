@@ -1,3 +1,8 @@
+## [2.0.1] - 2026-05-02
+
+### Fixed
+- Logic to make the glow hide after ~3 seconds was removed by accident
+
 ## [2.0.0] - 2026-05-02
 ### Added
 - Glow options panel

@@ -57,6 +57,7 @@ function TT.UpdateTrinket(frame, slotID)
     else
       if isReady and not frame._ttWasReady then
         TT.ShowReadyGlow(frame)
+        C_Timer.After(3, function() TT.HideReadyGlow(frame) end)
       end
       frame._ttWasReady = isReady
     end
