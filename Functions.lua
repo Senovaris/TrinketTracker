@@ -18,6 +18,8 @@ function TT.IsOnUseTrinket(slotID)
   return false
 end
 
+-- Update Trinket stuff and glow on CD --
+
 function TT.UpdateTrinket(frame, slotID)
   local itemTexture = GetInventoryItemTexture("player", slotID)
   if itemTexture then
@@ -57,6 +59,7 @@ function TT.UpdateTrinket(frame, slotID)
     else
       if isReady and not frame._ttWasReady then
         TT.ShowReadyGlow(frame)
+        frame._ttReadyGlow = true
         C_Timer.After(3, function() TT.HideReadyGlow(frame) end)
       end
       frame._ttWasReady = isReady
@@ -79,7 +82,6 @@ function TT.UpdateSizes()
   TT.trinket1:SetSize(size, size)
   TT.trinket2:SetSize(size, size)
 end
-
 
 function TT.UpdateTrinketLayout()
   local visible1 = TT.trinket1:IsShown()

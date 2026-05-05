@@ -45,3 +45,12 @@ function TT.HideReadyGlow(frame)
   local handler = glowHandlers[TTDB.glowType] or glowHandlers.none
   handler.hide(frame, LCG)
 end
+
+function TT.RefreshActiveGlows()
+  for _, frame in ipairs ({ TT.trinket1, TT.trinket2 }) do 
+    if frame._ttCombatGlow or frame._ttReadyGlow then
+      TT.HideReadyGlow(frame)
+      TT.ShowReadyGlow(frame)
+    end
+  end
+end

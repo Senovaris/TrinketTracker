@@ -1,3 +1,8 @@
+## [2.0.2] - 2026-05-05
+
+### Fixed
+- Logic to make the glow follow the trinket size
+
 ## [2.0.1] - 2026-05-02
 
 ### Fixed

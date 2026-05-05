@@ -439,6 +439,7 @@ function() return TTDB.iconSize end,
 function(val) TTDB.iconSize = val
   if val then
     TT.UpdateSizes()
+    TT.RefreshActiveGlows()
     if TT.MSQ_Group then
       TT.MSQ_Group:ReSkin()
     end
@@ -556,8 +557,10 @@ local testGlowButton = CreateButton(tabs[1].content, "Test Glow", 220, -100, fun
     if frame:IsShown() then
       if glowActive then
         TT.ShowReadyGlow(frame)
+        frame._ttReadyGlow = true
       else
         TT.HideReadyGlow(frame)
+        frame._ttReadyGlow = true
       end
     end
   end
