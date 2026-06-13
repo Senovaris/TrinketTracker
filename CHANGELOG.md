@@ -1,3 +1,12 @@
+## [2.0.3] - 2026-06-13
+
+### Added
+- 12.0.7 support
+
+### Changed
+- Color of the option panel
+- Size of the editmode container
+
 ## [2.0.2] - 2026-05-05
 
 ### Fixed

@@ -39,7 +39,7 @@ local function CreateSlider(parent, label, xOffset, yOffset, min, max, getValue,
   local fill = container:CreateTexture(nil, "BORDER")
   fill:SetHeight(2)
   fill:SetPoint("LEFT", track, "LEFT", 0, 0)
-  fill:SetColorTexture(0, 0.85, 1, 1)
+  fill:SetColorTexture(1, 0.4, 0, 1)
 
   local thumb = CreateFrame("Button", nil, container, "BackdropTemplate")
   thumb:SetSize(10, 18)
@@ -48,7 +48,7 @@ local function CreateSlider(parent, label, xOffset, yOffset, min, max, getValue,
     edgeFile = "Interface\\Buttons\\WHITE8x8",
     edgeSize = 1,
   })
-  thumb:SetBackdropColor(0, 0.85, 1, 1)
+  thumb:SetBackdropColor(1, 0.4, 0, 1)
   thumb:SetBackdropBorderColor(1, 1, 1, 0.4)
 
   local labelText = container:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -57,7 +57,7 @@ local function CreateSlider(parent, label, xOffset, yOffset, min, max, getValue,
 
   local valueText = container:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   valueText:SetPoint("BOTTOMRIGHT", container, "TOPRIGHT", 0, 2)
-  valueText:SetTextColor(0, 0.85, 1, 1)
+  valueText:SetTextColor(1, 0.4, 0, 1)
 
   local trackWidth = 184
   local currentValue = min
@@ -68,7 +68,7 @@ local function CreateSlider(parent, label, xOffset, yOffset, min, max, getValue,
     thumb:ClearAllPoints()
     thumb:SetPoint("CENTER", container, "LEFT", thumbX, 8)
     fill:SetWidth(math.max(0, pct * trackWidth))
-    labelText:SetText(label .. ": |cff00d9ff" .. val .. "|r")
+    labelText:SetText(label .. ": |cffff6600" .. val .. "|r")
   end
 
   local function SetValue(val)
@@ -123,12 +123,12 @@ local function CreateCheckbox(parent, label, xOffset, yOffset, getValue, setValu
     edgeSize = 1,
   })
   container:SetBackdropColor(0.08, 0.08, 0.08, 1)
-  container:SetBackdropBorderColor(0, 0.85, 1, 0.6)
+  container:SetBackdropBorderColor(1, 0.4, 0, 0.6)
 
   local check = container:CreateTexture(nil, "OVERLAY")
   check:SetPoint("CENTER")
   check:SetSize(10, 10)
-  check:SetColorTexture(0, 0.85, 1, 1)
+  check:SetColorTexture(1, 0.4, 0, 1)
   check:Hide()
 
   local text = container:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -161,7 +161,7 @@ local function CreateDropdown(parent, xOffset, yOffset, options, getValue, setVa
     edgeSize = 1,
   })
   anchor:SetBackdropColor(0.1, 0.1, 0.1, 1)
-  anchor:SetBackdropBorderColor(0, 0.85, 1, 0.6)
+  anchor:SetBackdropBorderColor(1, 0.4, 0, 0.6)
   local label = anchor:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   label:SetPoint("LEFT", 8, 0)
   label:SetText("Select...")
@@ -175,7 +175,7 @@ local function CreateDropdown(parent, xOffset, yOffset, options, getValue, setVa
     edgeSize = 1,
   })
   list:SetBackdropColor(0.08, 0.08, 0.08, 1)
-  list:SetBackdropBorderColor(0, 0.85, 1, 0.6)
+  list:SetBackdropBorderColor(1, 0.4, 0, 0.6)
   list:SetFrameLevel(parent:GetFrameLevel() + 10)
   list:Hide()
   for i, opt in ipairs(options) do
@@ -187,7 +187,7 @@ local function CreateDropdown(parent, xOffset, yOffset, options, getValue, setVa
     btnLabel:SetText(opt.name)
     btnLabel:SetTextColor(0.9, 0.9, 0.9, 1)
     btn:SetScript("OnEnter", function()
-      btnLabel:SetTextColor(0, 0.85, 1, 1)
+      btnLabel:SetTextColor(1, 0.4, 0, 1)
     end)
     btn:SetScript("OnLeave", function()
       btnLabel:SetTextColor(1, 1, 1, 1)
@@ -222,20 +222,20 @@ local function CreateButton(parent, label, xOffset, yOffset, onClickFunc)
     edgeSize = 1,
   })
   btn:SetBackdropColor(0.08, 0.08, 0.08, 1)
-  btn:SetBackdropBorderColor(0, 0.85, 1, 0.6)
+  btn:SetBackdropBorderColor(1, 0.4, 0, 0.6)
 
   local text = btn:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   text:SetPoint("CENTER")
   text:SetText(label)
-  text:SetTextColor(0, 0.85, 1, 1)
+  text:SetTextColor(1, 0.4, 0, 1)
 
   btn:SetScript("OnEnter", function()
-    btn:SetBackdropBorderColor(0, 0.85, 1, 1)
+    btn:SetBackdropBorderColor(1, 0.4, 0, 1)
     text:SetTextColor(1, 1, 1, 1)
   end)
   btn:SetScript("OnLeave", function()
-    btn:SetBackdropBorderColor(0, 0.85, 1, 0.6)
-    text:SetTextColor(0, 0.85, 1, 1)
+    btn:SetBackdropBorderColor(1, 0.4, 0, 0.6)
+    text:SetTextColor(1, 0.4, 0, 1)
   end)
   btn:SetScript("OnClick", onClickFunc)
 
@@ -251,7 +251,7 @@ local function CreateColorSwatch(parent, xOffset, yOffset, getColor, setColor)
     edgeFile = "Interface\\Buttons\\WHITE8x8",
     edgeSize = 1,
   })
-  swatch:SetBackdropBorderColor(0, 0.85, 1, 0.6)
+  swatch:SetBackdropBorderColor(1, 0.4, 0, 0.6)
 
   local tex = swatch:CreateTexture(nil, "ARTWORK")
   tex:SetAllPoints()
@@ -297,7 +297,7 @@ panel:SetBackdrop({
   edgeSize = 2,
 })
 panel:SetBackdropColor(0.05, 0.05, 0.05, 0.95)
-panel:SetBackdropBorderColor(0, 0.85, 1, 0.6)
+panel:SetBackdropBorderColor(1, 0.4, 0, 0.6)
 panel:SetScript("OnMouseDown", function(self, button)
   if button == "LeftButton" then self:StartMoving() end
 end)
@@ -308,7 +308,7 @@ panel:Hide()
 
 local mainTitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 mainTitle:SetPoint("TOP", 0, -10)
-mainTitle:SetText("|cff00d9ffTrinket Tracker Options|r")
+mainTitle:SetText("|cffff6600Trinket Tracker Options|r")
 
 local subTitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 subTitle:SetPoint("TOP", 0, -30)
@@ -348,7 +348,7 @@ local function CreateTabButton(parent, index, name)
   line:SetHeight(2)
   line:SetPoint("BOTTOMLEFT", 0, 0)
   line:SetPoint("BOTTOMRIGHT", 0, 0)
-  line:SetColorTexture(0, 0.85, 1, 1)
+  line:SetColorTexture(1, 0.4, 0, 1)
   line:Hide()
   tab._line = line
 
@@ -373,9 +373,9 @@ tabs[2] = { button = CreateTabButton(panel, 2, "Blacklist"), content = CreateTab
 function UpdateTabs()
   for i, tab in ipairs(tabs) do
     if i == activeTab then
-      tab.button._label:SetTextColor(0, 0.85, 1, 1)
+      tab.button._label:SetTextColor(1, 0.4, 0, 1)
       tab.button._line:Show()
-      tab.button:SetBackdropBorderColor(0, 0.85, 1, 0.4)
+      tab.button:SetBackdropBorderColor(1, 0.4, 0, 0.4)
       tab.content:Show()
     else
       tab.button._label:SetTextColor(0.5, 0.5, 0.5, 1)
@@ -395,7 +395,7 @@ local onUseCheck = CreateCheckbox(tabs[1].content, "Only show on-use trinkets", 
 function() return TTDB.onlyShowOnUseTrinkets end,
 function(val) TTDB.onlyShowOnUseTrinkets = val; TT.UpdateTrinkets() end)
 
-local inCombatCheck = CreateCheckbox(tabs[1].content, "Only show in combat", 200, -10,
+local inCombatCheck = CreateCheckbox(tabs[1].content, "Only show in combat", 215, -10,
 function() return TTDB.onlyShowInCombat end,
 function(val) TTDB.onlyShowInCombat = val; TT.UpdateTrinkets() end)
 
@@ -434,7 +434,7 @@ function(val)
   TTDB.glowType = val
 end)
 
-local sizeSlider = CreateSlider(tabs[1].content, "Icon Size", 20, -140, 20, 120,
+local sizeSlider = CreateSlider(tabs[1].content, "Icon Size", 20, -150, 20, 120,
 function() return TTDB.iconSize end,
 function(val) TTDB.iconSize = val
   if val then
@@ -446,7 +446,7 @@ function(val) TTDB.iconSize = val
   end
 end)
 
-local gapSlider  = CreateSlider(tabs[1].content, "Padding", 220, -140, 1, 50,
+local gapSlider  = CreateSlider(tabs[1].content, "Padding", 220, -150, 1, 50,
 function() return TTDB.gap end,
 function(val) TTDB.gap = val
   if val then
@@ -467,13 +467,13 @@ glowPopup:SetBackdrop({
   edgeSize = 2,
 })
 glowPopup:SetBackdropColor(0.05, 0.05, 0.05, 0.95)
-glowPopup:SetBackdropBorderColor(0, 0.85, 1, 0.6)
+glowPopup:SetBackdropBorderColor(1, 0.4, 0, 0.6)
 glowPopup:SetFrameLevel(panel:GetFrameLevel() + 20)
 glowPopup:Hide()
 
 local popupTitle = glowPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 popupTitle:SetPoint("TOP", 0, -10)
-popupTitle:SetTextColor(0, 0.85, 1, 1)
+popupTitle:SetTextColor(1, 0.4, 0, 1)
 
 local popupSliders = {}
 
@@ -632,7 +632,7 @@ scrollBg:SetBackdrop({
   insets = { left = 1, right = 1, top = 1, bottom = 1 },
 })
 scrollBg:SetBackdropColor(0.02, 0.02, 0.02, 0.95)
-scrollBg:SetBackdropBorderColor(0, 0.85, 1, 0.3)
+scrollBg:SetBackdropBorderColor(1, 0.4, 0, 0.3)
 
 function UpdateBlacklistDisplay()
   for _, child in pairs({scrollChild:GetChildren()}) do
@@ -669,7 +669,7 @@ function UpdateBlacklistDisplay()
         insets = { left = 0, right = 0, top = 0, bottom = 0 },
       })
       entry:SetBackdropColor(0.04, 0.04, 0.05, 0.8)
-      entry:SetBackdropBorderColor(0, 0.85, 1, 0.2)
+      entry:SetBackdropBorderColor(1, 0.4, 0, 0.2)
 
       local icon = entry:CreateTexture(nil, "ARTWORK")
       icon:SetSize(20, 20)

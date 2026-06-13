@@ -9,7 +9,7 @@ local addonName, TT = ...
 -- Trinkets --
 
 TT.container = CreateFrame("Frame", "Trinkets", UIParent)
-TT.container:SetSize(110, 110)
+TT.container:SetSize(100, 100)
 TT.container:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 TT.container:SetClampedToScreen(true)
 
