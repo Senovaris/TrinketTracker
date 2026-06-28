@@ -1,83 +1,105 @@
 ## [2.0.3] - 2026-06-13
 
 ### Added
-- 12.0.7 support
+- Support for patch 12.0.7
 
 ### Changed
-- Color of the option panel
-- Size of the editmode container
+- Options panel color
+- Edit Mode container size
+
+---
 
 ## [2.0.2] - 2026-05-05
 
 ### Fixed
-- Logic to make the glow follow the trinket size
+- Glow size not following trinket size correctly
+
+---
 
 ## [2.0.1] - 2026-05-02
 
 ### Fixed
-- Logic to make the glow hide after ~3 seconds was removed by accident
+- Glow hide timer accidentally removed in 2.0.0
+
+---
 
 ## [2.0.0] - 2026-05-02
+
 ### Added
 - Glow options panel
-- Tabs into the options panel
+- Tab structure to the options panel
 
 ### Changed
-- Reworked the whole options panel to make it feel a bit more standalone
+- Reworked options panel to feel more standalone
+
+---
 
 ## [1.9.1] - 2026-04-29
 
 ### Fixed
-- Fixed issues with the new gap feature that was missed while testing
+- Gap feature edge cases missed during testing
 
-## [1.9] - 2026-04-28
+---
+
+## [1.9.0] - 2026-04-28
 
 ### Added
-- Added a slider to change the gap between the icons
-- Glow when trinket gets off cooldown for 3 seconds.
+- Slider to control gap between icons
+- Glow on cooldown expiry, lasting 3 seconds
+
+---
 
 ## [1.8.1] - 2026-04-19
 
 ### Changed
-- updated .toc to add 12.0.5.
-- Set default blacklist to current expansion trinkets.
+- TOC updated for patch 12.0.5
+- Default blacklist updated to current expansion trinkets
 
 ### Removed
-- Removed SavedVariablesPerCharacter
+- SavedVariablesPerCharacter
 
-## [1.8] - 2026-04-05
+---
+
+## [1.8.0] - 2026-04-05
 
 ### Added
-- Added a table to global functions and names, for practice and precaution if the project grows
-- Re-added the trinket "So'leahs Secret Technique" to the default blacklist
-- Made the default blacklist forced and it will get updated every reload as it is now.
+- Global function/name table for structure and future-proofing
+- So'leah's Secret Technique re-added to default blacklist
+- Default blacklist now force-updates on every reload
 
-### Changed 
-- Changed the structure of the DB to not use "_initialized" block as it can reset blacklists.
-
-### Removed
-- Removed redundant code and reworked some structural debt
-
-## [1.7] - 2026-04-03
-### Added
-- Added the trinket "Drum of Renewed Bonds" to the default blacklist
-
-### Fixed 
-- The size fix earlier broke the cooldown swipe/numbers, that is now Fixed
-
-### Removed
-- Removed the trinket "So'leahs Secret Technique" from the default blacklist 
-
-## [1.6] - 2026-04-03
 ### Changed
-- Fixed issues with the size after a reload/relog 
+- DB structure no longer uses `_initialized` block to avoid blacklist resets
 
-## [1.5] - 2026-03-15
+### Removed
+- Redundant code and structural debt
+
+---
+
+## [1.7.0] - 2026-04-04
+
+### Added
+- Drum of Renewed Bonds added to default blacklist
+
+### Fixed
+- Cooldown swipe and numbers broken by the 1.6.0 size fix
+
+### Removed
+- So'leah's Secret Technique removed from default blacklist
+
+---
+
+## [1.6.0] - 2026-04-03
+
+### Fixed
+- Trinket size not persisting correctly after reload or relog
+
+---
+
+## [1.5.0] - 2026-03-15
+
 ### Added
 - Masque support
-
-### Changed
-- The sizes on the size slider to better handle Masque
+- Adjusted size slider range to work better with Masque
 
 ### Removed
 - Bloated code

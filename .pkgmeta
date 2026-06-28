@@ -8,3 +8,11 @@ tag: latest
 libs/LibCustomGlow-1.0:
 url: https://github.com/Stanzilla/LibCustomGlow
 branch: master
+changelog-title: Changelog
+changelog-file: CHANGELOG.md
+
+ignore:
+- .github
+- .gitignore
+- CHANGELOG.md
+- README.md
