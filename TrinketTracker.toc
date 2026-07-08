@@ -16,6 +16,9 @@ libs\LibEditMode\embed.xml
 libs\LibCustomGlow\LibCustomGlow-1.0.lua
 
 # Main files
+Theme.lua
+blacklistOptions.lua
+glowOptions.lua
 Core.lua
 Glow.lua
 Functions.lua

@@ -1,7 +1,7 @@
 -- Well it's the default blacklist :) (Will be updated when new trinkets comes out) [Midnight] --
 local defaultBlacklist = {
-  193718, -- Emerald Coach's [Dungeon]
-  248583, -- Drums of Renewed Bonds [Delve]
+	193718, -- Emerald Coach's [Dungeon]
+	248583, -- Drums of Renewed Bonds [Delve]
 }
 
 local addonName, TT = ...
@@ -38,123 +38,125 @@ eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
-  if event == "ADDON_LOADED" and arg1 == "TrinketTracker" then
-    TTDB = TTDB or {}
-    TTDB.iconSize = TTDB.iconSize or 44
-    TTDB.layout = TTDB.layout or "vertical"
-    TTDB.onlyShowInCombat = TTDB.onlyShowInCombat or false
-    TTDB.blacklistedTrinkets = TTDB.blacklistedTrinkets or {}
-    if TTDB.onlyShowOnUseTrinkets == nil then
-      TTDB.onlyShowOnUseTrinkets = true
-    end
-    TTDB.gap = TTDB.gap or 1
-    TTDB.glowType = TTDB.glowType or "button"
-    TTDB.glowSettings = TTDB.glowSettings or {}
-    TTDB.glowSettings.button   = TTDB.glowSettings.button   or { r=0, g=0.85, b=1, frequency=0.25 }
-    TTDB.glowSettings.pixel    = TTDB.glowSettings.pixel    or { r=0, g=0.85, b=1, frequency=0.25, lines=8, thickness=2 }
-    TTDB.glowSettings.autocast = TTDB.glowSettings.autocast or { r=0, g=0.85, b=1, frequency=0.125, particles=4 }
-    self:UnregisterEvent("ADDON_LOADED")
+	if event == "ADDON_LOADED" and arg1 == "TrinketTracker" then
+		TTDB = TTDB or {}
+		TTDB.iconSize = TTDB.iconSize or 44
+		TTDB.layout = TTDB.layout or "vertical"
+		TTDB.onlyShowInCombat = TTDB.onlyShowInCombat or false
+		TTDB.blacklistedTrinkets = TTDB.blacklistedTrinkets or {}
+		if TTDB.onlyShowOnUseTrinkets == nil then
+			TTDB.onlyShowOnUseTrinkets = true
+		end
+		TTDB.gap = TTDB.gap or 1
+		TTDB.glowType = TTDB.glowType or "button"
+		TTDB.glowSettings = TTDB.glowSettings or {}
+		TTDB.glowSettings.button = TTDB.glowSettings.button or { r = 0, g = 0.85, b = 1, frequency = 0.25 }
+		TTDB.glowSettings.pixel = TTDB.glowSettings.pixel
+			or { r = 0, g = 0.85, b = 1, frequency = 0.25, lines = 8, thickness = 2 }
+		TTDB.glowSettings.autocast = TTDB.glowSettings.autocast
+			or { r = 0, g = 0.85, b = 1, frequency = 0.125, particles = 4 }
+		self:UnregisterEvent("ADDON_LOADED")
+	elseif event == "PLAYER_LOGIN" then
+		-- Merge Loop
+		for _, defaultID in ipairs(defaultBlacklist) do
+			local found = false
+			for _, userID in ipairs(TTDB.blacklistedTrinkets) do
+				if userID == defaultID then
+					found = true
+					break
+				end
+			end
+			if not found then
+				table.insert(TTDB.blacklistedTrinkets, defaultID)
+			end
+		end
 
-  elseif event == "PLAYER_LOGIN" then
+		-- LibEditMode --
 
-    -- Merge Loop
-    for _, defaultID in ipairs(defaultBlacklist) do
-      local found = false
-      for _, userID in ipairs(TTDB.blacklistedTrinkets) do
-        if userID == defaultID then
-          found = true
-          break
-        end
-      end
-      if not found then
-        table.insert(TTDB.blacklistedTrinkets, defaultID)
-      end
-    end
+		local LEM = LibStub("LibEditMode")
 
-    -- LibEditMode --
+		if LEM then
+			local function onPositionChanged(frame, layoutName, point, x, y)
+				if not TTDB.layouts then
+					TTDB.layouts = {}
+				end
+				if not TTDB.layouts[layoutName] then
+					TTDB.layouts[layoutName] = {}
+				end
+				TTDB.layouts[layoutName].point = point
+				TTDB.layouts[layoutName].x = x
+				TTDB.layouts[layoutName].y = y
+			end
 
-    local LEM = LibStub('LibEditMode')
+			local defaultPosition = {
+				point = "CENTER",
+				x = 0,
+				y = 0,
+			}
 
-    if LEM then
-      local function onPositionChanged(frame, layoutName, point, x, y)
-        if not TTDB.layouts then
-          TTDB.layouts = {}
-        end
-        if not TTDB.layouts[layoutName] then
-          TTDB.layouts[layoutName] = {}
-        end
-        TTDB.layouts[layoutName].point = point
-        TTDB.layouts[layoutName].x = x
-        TTDB.layouts[layoutName].y = y
-      end
+			LEM:RegisterCallback("layout", function(layoutName)
+				if not TTDB.layouts then
+					TTDB.layouts = {}
+				end
+				if not TTDB.layouts[layoutName] then
+					TTDB.layouts[layoutName] = { point = "CENTER", x = 0, y = 0 }
+				end
 
-      local defaultPosition = {
-        point = "CENTER",
-        x = 0,
-        y = 0,
-      }
-
-      LEM:RegisterCallback('layout', function(layoutName)
-        if not TTDB.layouts then
-          TTDB.layouts = {}
-        end
-        if not TTDB.layouts[layoutName] then
-          TTDB.layouts[layoutName] = {point = "CENTER", x = 0, y = 0}
-        end
-
-        TT.container:ClearAllPoints()
-        TT.container:SetPoint(TTDB.layouts[layoutName].point or "CENTER",
-        UIParent,
-        TTDB.layouts[layoutName].point or "CENTER",
-        TTDB.layouts[layoutName].x or 0,
-        TTDB.layouts[layoutName].y or 0)
-      end)
-      LEM:AddFrame(TT.container, onPositionChanged, defaultPosition)
-    end
-
-  elseif event == "PLAYER_ENTERING_WORLD" then
-    TT.UpdateTrinketLayout()
-    TT.UpdateSizes()
-    if TT.MSQ_Group then
-      TT.MSQ_Group:ReSkin()
-    end
-    C_Timer.After(0.5, TT.UpdateTrinkets)
-
-  elseif event == "PLAYER_EQUIPMENT_CHANGED"
-    or event == "BAG_UPDATE_COOLDOWN"
-    or event == "PLAYER_REGEN_ENABLED"
-    or event == "PLAYER_REGEN_DISABLED" then
-    TT.UpdateTrinkets()
-  end
+				TT.container:ClearAllPoints()
+				TT.container:SetPoint(
+					TTDB.layouts[layoutName].point or "CENTER",
+					UIParent,
+					TTDB.layouts[layoutName].point or "CENTER",
+					TTDB.layouts[layoutName].x or 0,
+					TTDB.layouts[layoutName].y or 0
+				)
+			end)
+			LEM:AddFrame(TT.container, onPositionChanged, defaultPosition)
+		end
+	elseif event == "PLAYER_ENTERING_WORLD" then
+		TT.UpdateTrinketLayout()
+		TT.UpdateSizes()
+		if TT.MSQ_Group then
+			TT.MSQ_Group:ReSkin()
+		end
+		C_Timer.After(0.5, TT.UpdateTrinkets)
+	elseif
+		event == "PLAYER_EQUIPMENT_CHANGED"
+		or event == "BAG_UPDATE_COOLDOWN"
+		or event == "PLAYER_REGEN_ENABLED"
+		or event == "PLAYER_REGEN_DISABLED"
+	then
+		TT.UpdateTrinkets()
+	end
 end)
 
 -- Added Masque Support --
 
 local function GetMasqueData(button)
-  return {
-    Icon = button.icon,
-    Cooldown = button.cooldown,
-    Border = button.border,
-    Count = button.count,
-  }
+	return {
+		Icon = button.icon,
+		Cooldown = button.cooldown,
+		Border = button.border,
+		Count = button.count,
+	}
 end
 
 local Masque = LibStub("Masque", true)
 if Masque then
-  TT.MSQ_Group = Masque:Group("Trinket Tracker")
-  TT.MSQ_Group:AddButton(TT.trinket1, GetMasqueData(TT.trinket1))
-  TT.MSQ_Group:AddButton(TT.trinket2, GetMasqueData(TT.trinket2))
-  TT.MSQ_Group:RegisterCallback(function()
-    TT.UpdateTrinketLayout()
-    TT.UpdateSizes()
-  end)
+	TT.MSQ_Group = Masque:Group("Trinket Tracker")
+	TT.MSQ_Group:AddButton(TT.trinket1, GetMasqueData(TT.trinket1))
+	TT.MSQ_Group:AddButton(TT.trinket2, GetMasqueData(TT.trinket2))
+	TT.MSQ_Group:RegisterCallback(function()
+		TT.UpdateTrinketLayout()
+		TT.UpdateSizes()
+	end)
 end
 
 C_Timer.After(1, function()
-  print("|cff00d9ffTrinket Tracker loaded!|r|cffFFFFFF Type /tt, /trt or /trinkettracker for options|r")
-  C_Timer.NewTicker(0.1, function()
-    if TT.UpdateTrinkets then TT.UpdateTrinkets() end
-  end)
+	print("|cff00d9ffTrinket Tracker loaded!|r|cffFFFFFF Type /tt, /trt or /trinkettracker for options|r")
+	C_Timer.NewTicker(0.1, function()
+		if TT.UpdateTrinkets then
+			TT.UpdateTrinkets()
+		end
+	end)
 end)
-
-

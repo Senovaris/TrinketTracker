@@ -1,3 +1,11 @@
+## 2.0.4 - 2026-07-08
+
+### Changed
+- Rebuilt the Options panel properly
+- Moved glow panel and blacklist to new files
+
+---
+
 ## [2.0.3] - 2026-06-13
 
 ### Added
