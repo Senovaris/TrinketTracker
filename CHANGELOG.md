@@ -1,4 +1,4 @@
-## 2.0.5 - 2026-07-23
+## [2.0.5] - 2026-07-23
 
 ### Added
 - Support for patch 12.1.0
@@ -6,7 +6,7 @@
 
 ---
 
-## 2.0.4 - 2026-07-08
+## [2.0.4] - 2026-07-08
 
 ### Changed
 - Rebuilt the Options panel properly
