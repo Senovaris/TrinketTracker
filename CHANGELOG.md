@@ -1,3 +1,11 @@
+## 2.0.5 - 2026-07-23
+
+### Added
+- Support for patch 12.1.0
+- Added Ruby Whelp Shell to default blacklist
+
+---
+
 ## 2.0.4 - 2026-07-08
 
 ### Changed

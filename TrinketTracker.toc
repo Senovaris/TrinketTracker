@@ -1,6 +1,6 @@
-## Interface: 120007, 120005
+## Interface: 120100, 120007, 120005
 ## Title: |cff00d9ffTrinket Tracker|r
-## Notes: Simple trinket tracker with a blacklist and on-use filtering
+## Notes: Simple trinket tracker with a blacklist, on-use filtering and glow effect
 ## Author: Aurs
 ## Category: Aurs UI
 ## Version: @project-version@
@@ -16,6 +16,7 @@ libs\LibEditMode\embed.xml
 libs\LibCustomGlow\LibCustomGlow-1.0.lua
 
 # Main files
+
 Theme.lua
 blacklistOptions.lua
 glowOptions.lua

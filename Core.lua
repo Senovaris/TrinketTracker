@@ -2,6 +2,7 @@
 local defaultBlacklist = {
 	193718, -- Emerald Coach's [Dungeon]
 	248583, -- Drums of Renewed Bonds [Delve]
+	193757, -- Ruby Whelp Shell [Dungeon]
 }
 
 local addonName, TT = ...
