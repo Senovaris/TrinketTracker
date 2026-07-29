@@ -17,6 +17,19 @@ TT.container:SetClampedToScreen(true)
 TT.trinket1 = CreateFrame("Frame", nil, TT.container)
 TT.trinket1:SetSize(44, 44)
 TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, 0)
+TT.trinket1:EnableMouse(true)
+TT.trinket1:SetScript("OnEnter", function(self)
+	if UnitAffectingCombat("player") then
+		return
+	end
+	if not self.itemID then
+		return
+	end
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	GameTooltip:SetHyperlink(self.itemID)
+	GameTooltip:Show()
+end)
+TT.trinket1:SetScript("OnLeave", GameTooltip_Hide)
 TT.trinket1.icon = TT.trinket1:CreateTexture(nil, "ARTWORK")
 TT.trinket1.icon:SetAllPoints(TT.trinket1)
 TT.trinket1.cooldown = CreateFrame("Cooldown", nil, TT.trinket1, "CooldownFrameTemplate")
@@ -25,6 +38,16 @@ TT.trinket1.cooldown:SetAllPoints()
 TT.trinket2 = CreateFrame("Frame", nil, TT.container)
 TT.trinket2:SetSize(44, 44)
 TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, 0)
+TT.trinket2:EnableMouse(true)
+TT.trinket2:SetScript("OnEnter", function(self)
+	if not self.itemID then
+		return
+	end
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	GameTooltip:SetHyperlink(self.itemID)
+	GameTooltip:Show()
+end)
+TT.trinket2:SetScript("OnLeave", GameTooltip_Hide)
 TT.trinket2.icon = TT.trinket2:CreateTexture(nil, "ARTWORK")
 TT.trinket2.icon:SetAllPoints(TT.trinket2)
 TT.trinket2.cooldown = CreateFrame("Cooldown", nil, TT.trinket2, "CooldownFrameTemplate")

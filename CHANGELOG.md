@@ -1,3 +1,10 @@
+## [2.0.6] - 2026-07-29
+
+### Added
+- Tooltip on hover - Hides in combat but shows if you hover over it when entering combat.
+
+---
+
 ## [2.0.5] - 2026-07-23
 
 ### Added
