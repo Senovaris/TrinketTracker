@@ -1,3 +1,10 @@
+## [2.0.8] - 2026-08-29
+
+### Fixed
+- Merged LibCustomGlow fix from PR.
+
+---
+
 ## [2.0.7] - 2026-08-23
 
 ### Fixed
