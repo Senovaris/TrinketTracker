@@ -1,3 +1,11 @@
+## [2.0.9] - 2026-09-29
+
+### Added
+- Nil-guard for the LibEditMode layouts as a precuation for patch 12.1.5
+
+### Fixed
+- Made the Glow settings window bigger to match the sliders properly.
+
 ## [2.0.8] - 2026-08-29
 
 ### Fixed

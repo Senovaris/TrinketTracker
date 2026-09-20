@@ -34,7 +34,7 @@ local function BuildGlowPopup()
 				end
 			end
 		end)
-		popupSlider:SetWidth(190)
+		popupSlider:SetWidth(300)
 		table.insert(popupSliders, popupSlider)
 		y = y - 60
 	end
@@ -77,7 +77,7 @@ end
 function TT.InitGlowOptions(panel, layoutEngine)
 	-- Create popup frame
 	glowPopup = CreateFrame("Frame", nil, panel, "BackdropTemplate")
-	glowPopup:SetSize(220, 260)
+	glowPopup:SetSize(335, 260)
 	glowPopup:SetPoint("LEFT", panel, "RIGHT", 8, 0)
 	glowPopup:SetBackdrop({
 		bgFile = "Interface\\Buttons\\WHITE8x8",

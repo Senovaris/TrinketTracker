@@ -119,6 +119,10 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 			}
 
 			LEM:RegisterCallback("layout", function(layoutName)
+				if not layoutName then
+					return
+				end
+
 				if not TTDB.layouts then
 					TTDB.layouts = {}
 				end
