@@ -114,3 +114,21 @@ function TT.UpdateTrinketLayout()
 	end
 	TT.UpdateSizes()
 end
+
+-- New function for clickable trinkets --
+
+function TT.UpdateClickToUse()
+	if InCombatLockdown() then
+		return
+	end
+
+	if TTDB.clickToUse then
+		TT.trinket1:SetAttribute("type", "macro")
+		TT.trinket1:SetAttribute("macrotext", "/use 13")
+		TT.trinket2:SetAttribute("type", "macro")
+		TT.trinket2:SetAttribute("macrotext", "/use 14")
+	else
+		TT.trinket1:SetAttribute("type", nil)
+		TT.trinket2:SetAttribute("type", nil)
+	end
+end

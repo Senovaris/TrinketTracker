@@ -144,6 +144,15 @@ local sizeSlider, gapSlider = L1:Row({
 	},
 })
 
+L1:Separator()
+
+local clickToUse = L1:Check("Enable Clickable Trinkets |cffff0023[Experimental]|r", function()
+	return TTDB.clickToUse
+end, function(val)
+	TTDB.clickToUse = val
+	TT.UpdateClickToUse(val)
+end)
+
 -- Tab 2
 
 TT.InitBlacklistOptions(panel, tabs[2].content)
@@ -157,6 +166,7 @@ panel:SetScript("OnShow", function()
 	inCombatCheck.SetChecked(TTDB.onlyShowInCombat)
 	layoutDropdown.SetSelected(TTDB.layout)
 	glowDropdown.SetSelected(TTDB.glowType)
+	clickToUse.SetChecked(TTDB.clickToUse)
 	UpdateTabs()
 	UpdateBlacklistDisplay()
 end)

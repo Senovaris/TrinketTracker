@@ -1,10 +1,23 @@
-## [2.0.9] - 2026-09-29
+## [2.1.0] - 2026-09-XX
+
+### Added
+- Another nil-guard for LibEditMode layouts.
+- An expirmental option to make the trinkets clickable.
+
+### Changed
+- Size of the frame in Edit mode have been made smaller.
+
+---
+
+## [2.0.9] - 2026-09-20
 
 ### Added
 - Nil-guard for the LibEditMode layouts as a precuation for patch 12.1.5
 
 ### Fixed
 - Made the Glow settings window bigger to match the sliders properly.
+
+---
 
 ## [2.0.8] - 2026-08-29
 

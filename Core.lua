@@ -10,14 +10,16 @@ local addonName, TT = ...
 -- Trinkets --
 
 TT.container = CreateFrame("Frame", "Trinkets", UIParent)
-TT.container:SetSize(100, 100)
+TT.container:SetSize(60, 100)
 TT.container:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 TT.container:SetClampedToScreen(true)
 
-TT.trinket1 = CreateFrame("Frame", nil, TT.container)
+TT.trinket1 = CreateFrame("Button", nil, TT.container, "SecureActionButtonTemplate")
 TT.trinket1:SetSize(44, 44)
 TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, 0)
 TT.trinket1:EnableMouse(true)
+TT.trinket1:RegisterForClicks("AnyUp", "AnyDown")
+
 TT.trinket1:SetScript("OnEnter", function(self)
 	if UnitAffectingCombat("player") then
 		return
@@ -35,10 +37,12 @@ TT.trinket1.icon:SetAllPoints(TT.trinket1)
 TT.trinket1.cooldown = CreateFrame("Cooldown", nil, TT.trinket1, "CooldownFrameTemplate")
 TT.trinket1.cooldown:SetAllPoints()
 
-TT.trinket2 = CreateFrame("Frame", nil, TT.container)
+TT.trinket2 = CreateFrame("Button", nil, TT.container, "SecureActionButtonTemplate")
 TT.trinket2:SetSize(44, 44)
 TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, 0)
 TT.trinket2:EnableMouse(true)
+TT.trinket2:RegisterForClicks("AnyUp", "AnyDown")
+
 TT.trinket2:SetScript("OnEnter", function(self)
 	if not self.itemID then
 		return
@@ -79,9 +83,10 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 			or { r = 0, g = 0.85, b = 1, frequency = 0.25, lines = 8, thickness = 2 }
 		TTDB.glowSettings.autocast = TTDB.glowSettings.autocast
 			or { r = 0, g = 0.85, b = 1, frequency = 0.125, particles = 4 }
+		TTDB.clickToUse = TTDB.clickToUse or false
 		self:UnregisterEvent("ADDON_LOADED")
 	elseif event == "PLAYER_LOGIN" then
-		-- Merge Loop
+		-- Merge Loop --
 		for _, defaultID in ipairs(defaultBlacklist) do
 			local found = false
 			for _, userID in ipairs(TTDB.blacklistedTrinkets) do
@@ -101,6 +106,8 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 
 		if LEM then
 			local function onPositionChanged(frame, layoutName, point, x, y)
+				layoutName = layoutName or "Default"
+
 				if not TTDB.layouts then
 					TTDB.layouts = {}
 				end
@@ -144,6 +151,8 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		TT.UpdateTrinketLayout()
 		TT.UpdateSizes()
+		TT.UpdateClickToUse()
+
 		if TT.MSQ_Group then
 			TT.MSQ_Group:ReSkin()
 		end
