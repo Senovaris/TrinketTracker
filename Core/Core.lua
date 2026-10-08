@@ -19,16 +19,15 @@ TT.trinket1:SetSize(44, 44)
 TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, 0)
 TT.trinket1:EnableMouse(true)
 TT.trinket1:RegisterForClicks("AnyUp", "AnyDown")
-
-TT.trinket1:SetScript("OnEnter", function(self)
+TT.trinket1:SetScript("OnEnter", function(toolTip)
 	if UnitAffectingCombat("player") then
 		return
 	end
-	if not self.itemID then
+	if not toolTip.itemID then
 		return
 	end
-	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	GameTooltip:SetHyperlink(self.itemID)
+	GameTooltip:SetOwner(toolTip, "ANCHOR_RIGHT")
+	GameTooltip:SetHyperlink(toolTip.itemID)
 	GameTooltip:Show()
 end)
 TT.trinket1:SetScript("OnLeave", GameTooltip_Hide)
@@ -42,13 +41,15 @@ TT.trinket2:SetSize(44, 44)
 TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, 0)
 TT.trinket2:EnableMouse(true)
 TT.trinket2:RegisterForClicks("AnyUp", "AnyDown")
-
-TT.trinket2:SetScript("OnEnter", function(self)
-	if not self.itemID then
+TT.trinket2:SetScript("OnEnter", function(toolTip)
+	if UnitAffectingCombat("player") then
 		return
 	end
-	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	GameTooltip:SetHyperlink(self.itemID)
+	if not toolTip.itemID then
+		return
+	end
+	GameTooltip:SetOwner(toolTip, "ANCHOR_RIGHT")
+	GameTooltip:SetHyperlink(toolTip.itemID)
 	GameTooltip:Show()
 end)
 TT.trinket2:SetScript("OnLeave", GameTooltip_Hide)
@@ -167,7 +168,7 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 	end
 end)
 
--- Added Masque Support --
+-- Masque --
 
 local function GetMasqueData(button)
 	return {

@@ -20,7 +20,7 @@ function TT.IsOnUseTrinket(slotID)
 	return false
 end
 
--- Update Trinket stuff and glow on CD --
+-- Update Trinket stuff and glow on CD -- This will be rewritten and split --
 
 function TT.UpdateTrinket(frame, slotID)
 	local itemTexture = GetInventoryItemTexture("player", slotID)
@@ -37,8 +37,10 @@ function TT.UpdateTrinket(frame, slotID)
 
 		if TTDB.onlyShowOnUseTrinkets then
 			if not TT.IsOnUseTrinket(slotID) then
-				frame:Hide()
-				return
+				if not InCombatLockdown() then
+					frame:Hide()
+					return
+				end
 			end
 		end
 
@@ -70,13 +72,30 @@ function TT.UpdateTrinket(frame, slotID)
 			end
 			frame._ttWasReady = isReady
 		end
-		frame:Show()
+		if not InCombatLockdown() then
+			frame:Show()
+		end
 	else
-		frame:Hide()
+		if not InCombatLockdown() then
+			frame:Hide()
+		end
 	end
 end
 
 function TT.UpdateTrinkets()
+	if TT.trinket1:IsShown() then
+		local start1, duration1 = GetInventoryItemCooldown("player", 13)
+		if start1 and duration1 then
+			TT.trinket1.cooldown:SetCooldown(start1, duration1)
+		end
+	end
+	if TT.trinket2:IsShown() then
+		local start2, duration2 = GetInventoryItemCooldown("player", 14)
+		if start2 and duration2 then
+			TT.trinket2.cooldown:SetCooldown(start2, duration2)
+		end
+	end
+
 	TT.UpdateTrinket(TT.trinket1, 13)
 	TT.UpdateTrinket(TT.trinket2, 14)
 	TT.UpdateTrinketLayout()
@@ -84,12 +103,20 @@ function TT.UpdateTrinkets()
 end
 
 function TT.UpdateSizes()
+	if InCombatLockdown() then
+		return
+	end
+
 	local size = TTDB.iconSize
 	TT.trinket1:SetSize(size, size)
 	TT.trinket2:SetSize(size, size)
 end
 
 function TT.UpdateTrinketLayout()
+	if InCombatLockdown() then
+		return
+	end
+
 	local visible1 = TT.trinket1:IsShown()
 	local visible2 = TT.trinket2:IsShown()
 

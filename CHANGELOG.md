@@ -1,11 +1,14 @@
-## [2.1.0] - 2026-09-XX
+## [2.1.0] - 2026-10-08
 
 ### Added
 - Another nil-guard for LibEditMode layouts.
-- An expirmental option to make the trinkets clickable.
+- An option to make the trinkets clickable. Very Experimental.
+- Layout & Size guards for ADDON_ACTION_BLOCKED due to the clickable trinkets.
+- Support for 12.1.5
 
 ### Changed
 - Size of the frame in Edit mode have been made smaller.
+- Changed the strata of the options panel to be in front of other elements
 
 ---
 

@@ -30,6 +30,7 @@ function AursUI.CreatePanel(width, height, title, subtitle)
 	panel:SetClampedToScreen(true)
 	panel:SetBackdrop(MakeBackdrop(2))
 	panel:SetBackdropColor(unpack(PANEL_BG))
+	panel:SetFrameStrata("DIALOG")
 	panel:SetBackdropBorderColor(TR, TG, TB, 0.6)
 	panel:SetScript("OnMouseDown", function(self, btn)
 		if btn == "LeftButton" then
