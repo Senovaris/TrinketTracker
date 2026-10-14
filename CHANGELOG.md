@@ -1,3 +1,10 @@
+## [2.1.1] - 2026-10-14
+
+### Fixed
+- Fixed an API change from patch 12.1.5 
+
+---
+
 ## [2.1.0] - 2026-10-08
 
 ### Added

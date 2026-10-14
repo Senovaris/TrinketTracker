@@ -12,7 +12,7 @@ function TT.IsOnUseTrinket(slotID)
 		end
 	end
 
-	local spellName, spellID = GetItemSpell(itemID)
+	local spellName, spellID = C_Item.GetItemSpell(itemID)
 	if spellName then
 		return true
 	end
