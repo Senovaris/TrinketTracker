@@ -1,6 +1,6 @@
 local addonName, TT = ...
 
-function UpdateBlacklistDisplay() end
+function TT.UpdateBlacklistDisplay() end
 
 function TT.InitBlacklistOptions(panel, tabContent)
 	local L2 = AursUI.NewLayout(tabContent, 16, -10)
@@ -79,7 +79,7 @@ function TT.InitBlacklistOptions(panel, tabContent)
 	})
 	scrollBg:SetBackdropColor(0.02, 0.02, 0.02, 0.95)
 	scrollBg:SetBackdropBorderColor(1, 0.4, 0, 0.3)
-	function UpdateBlacklistDisplay()
+	function TT.UpdateBlacklistDisplay()
 		if not TTDB or not TTDB.blacklistedTrinkets then
 			return
 		end
@@ -138,7 +138,7 @@ function TT.InitBlacklistOptions(panel, tabContent)
 				local removeBtn = AursUI.CreateButton(entry, "Remove", 0, 0, function()
 					table.remove(TTDB.blacklistedTrinkets, i)
 					TT.UpdateTrinkets()
-					UpdateBlacklistDisplay()
+					TT.UpdateBlacklistDisplay()
 					print("|cff00d9ff[Trinket Tracker]|r Removed " .. itemName)
 				end)
 				removeBtn:SetSize(60, 20)
@@ -152,8 +152,8 @@ function TT.InitBlacklistOptions(panel, tabContent)
 	end
 
 	panel:HookScript("OnShow", function()
-		UpdateBlacklistDisplay()
+		TT.UpdateBlacklistDisplay()
 	end)
 
-	UpdateBlacklistDisplay()
+	TT.UpdateBlacklistDisplay()
 end

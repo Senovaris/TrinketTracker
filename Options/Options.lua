@@ -168,7 +168,7 @@ panel:SetScript("OnShow", function()
 	glowDropdown.SetSelected(TTDB.glowType)
 	clickToUse.SetChecked(TTDB.clickToUse)
 	UpdateTabs()
-	UpdateBlacklistDisplay()
+	TT.UpdateBlacklistDisplay()
 end)
 
 -- Slash command

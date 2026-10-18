@@ -29,8 +29,10 @@ function TT.UpdateTrinket(frame, slotID)
 		if itemID then
 			for _, blacklistedID in ipairs(TTDB.blacklistedTrinkets) do
 				if itemID == blacklistedID then
-					frame:Hide()
-					return
+					if not InCombatLockdown() then
+						frame:Hide()
+						return
+					end
 				end
 			end
 		end
@@ -45,8 +47,10 @@ function TT.UpdateTrinket(frame, slotID)
 		end
 
 		if TTDB.onlyShowInCombat and not UnitAffectingCombat("player") then
-			frame:Hide()
-			return
+			if not InCombatLockdown() then
+				frame:Hide()
+				return
+			end
 		end
 
 		frame.icon:SetTexture(itemTexture)

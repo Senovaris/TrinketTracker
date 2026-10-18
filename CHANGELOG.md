@@ -1,3 +1,10 @@
+## [2.1.2] - 2026-10-18
+
+### Fixed
+- Fixed some issues with the blacklist when adding Trinkets and the functions.
+
+---
+
 ## [2.1.1] - 2026-10-14
 
 ### Fixed
