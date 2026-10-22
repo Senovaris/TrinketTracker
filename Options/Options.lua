@@ -59,6 +59,12 @@ onUseCheck, inCombatCheck = L1:Row({
 	},
 })
 
+local hideToolTip = L1:Check("Hide Tooltips", function()
+	return TTDB.hideToolTip
+end, function(val)
+	TTDB.hideToolTip = val
+end)
+
 L1:Space(12)
 L1:Separator()
 L1:Space(22)
@@ -167,6 +173,7 @@ panel:SetScript("OnShow", function()
 	layoutDropdown.SetSelected(TTDB.layout)
 	glowDropdown.SetSelected(TTDB.glowType)
 	clickToUse.SetChecked(TTDB.clickToUse)
+	hideToolTip.SetChecked(TTDB.hideToolTip)
 	UpdateTabs()
 	TT.UpdateBlacklistDisplay()
 end)

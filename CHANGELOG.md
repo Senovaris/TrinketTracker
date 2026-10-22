@@ -1,3 +1,8 @@
+## [2.1.3] - 2026-10-19
+
+### Added
+- Added a checkbox to hide the Tooltip when hovering over a trinket
+
 ## [2.1.2] - 2026-10-18
 
 ### Fixed

@@ -20,6 +20,9 @@ TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, 0)
 TT.trinket1:EnableMouse(true)
 TT.trinket1:RegisterForClicks("AnyUp", "AnyDown")
 TT.trinket1:SetScript("OnEnter", function(toolTip)
+	if TTDB.hideToolTip then
+		return
+	end
 	if UnitAffectingCombat("player") then
 		return
 	end
@@ -42,6 +45,9 @@ TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, 0)
 TT.trinket2:EnableMouse(true)
 TT.trinket2:RegisterForClicks("AnyUp", "AnyDown")
 TT.trinket2:SetScript("OnEnter", function(toolTip)
+	if TTDB.hideToolTip then
+		return
+	end
 	if UnitAffectingCombat("player") then
 		return
 	end
@@ -85,6 +91,7 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 		TTDB.glowSettings.autocast = TTDB.glowSettings.autocast
 			or { r = 0, g = 0.85, b = 1, frequency = 0.125, particles = 4 }
 		TTDB.clickToUse = TTDB.clickToUse or false
+		TTDB.hideToolTip = TTDB.hideToolTip or false
 		self:UnregisterEvent("ADDON_LOADED")
 	elseif event == "PLAYER_LOGIN" then
 		-- Merge Loop --
