@@ -1,3 +1,5 @@
+package-as: TrinketTracker
+
 externals:
 libs/LibStub: # required dependency unless namespaced
 url: https://repos.curseforge.com/wow/libstub/trunk
