@@ -1,7 +1,16 @@
+## [2.1.4] - 2026-11-24
+
+### Changed
+- Changed directory layout to accomodate for Forever too since they run on the same APIs as retail
+
+---
+
 ## [2.1.3] - 2026-10-19
 
 ### Added
 - Added a checkbox to hide the Tooltip when hovering over a trinket
+
+---
 
 ## [2.1.2] - 2026-10-18
 

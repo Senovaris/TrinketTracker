@@ -1,0 +1,165 @@
+local addonName, TT = ...
+
+function TT.IsOnUseTrinket(slotID)
+	local itemID = GetInventoryItemID("player", slotID)
+	if not itemID then
+		return false
+	end
+
+	for _, blacklistedID in ipairs(TTDB.blacklistedTrinkets) do
+		if itemID == blacklistedID then
+			return false
+		end
+	end
+
+	local spellName, spellID = C_Item.GetItemSpell(itemID)
+	if spellName then
+		return true
+	end
+
+	return false
+end
+
+-- Update Trinket stuff and glow on CD -- This will be rewritten and split --
+
+function TT.UpdateTrinket(frame, slotID)
+	local itemTexture = GetInventoryItemTexture("player", slotID)
+	if itemTexture then
+		local itemID = GetInventoryItemID("player", slotID)
+		if itemID then
+			for _, blacklistedID in ipairs(TTDB.blacklistedTrinkets) do
+				if itemID == blacklistedID then
+					if not InCombatLockdown() then
+						frame:Hide()
+						return
+					end
+				end
+			end
+		end
+
+		if TTDB.onlyShowOnUseTrinkets then
+			if not TT.IsOnUseTrinket(slotID) then
+				if not InCombatLockdown() then
+					frame:Hide()
+					return
+				end
+			end
+		end
+
+		if TTDB.onlyShowInCombat and not UnitAffectingCombat("player") then
+			if not InCombatLockdown() then
+				frame:Hide()
+				return
+			end
+		end
+
+		frame.icon:SetTexture(itemTexture)
+
+		frame.itemID = GetInventoryItemLink("player", slotID) -- Might do frame.itemLink instead but meh
+
+		local start, duration = GetInventoryItemCooldown("player", slotID)
+		if start and duration then
+			frame.cooldown:SetCooldown(start, duration)
+		end
+
+		local isReady = not (start and duration and start > 0 and duration > 1.5)
+
+		if frame._ttWasReady == nil then
+			frame._ttWasReady = isReady
+		else
+			if isReady and not frame._ttWasReady then
+				TT.ShowReadyGlow(frame)
+				frame._ttReadyGlow = true
+				C_Timer.After(3, function()
+					TT.HideReadyGlow(frame)
+				end)
+			end
+			frame._ttWasReady = isReady
+		end
+		if not InCombatLockdown() then
+			frame:Show()
+		end
+	else
+		if not InCombatLockdown() then
+			frame:Hide()
+		end
+	end
+end
+
+function TT.UpdateTrinkets()
+	if TT.trinket1:IsShown() then
+		local start1, duration1 = GetInventoryItemCooldown("player", 13)
+		if start1 and duration1 then
+			TT.trinket1.cooldown:SetCooldown(start1, duration1)
+		end
+	end
+	if TT.trinket2:IsShown() then
+		local start2, duration2 = GetInventoryItemCooldown("player", 14)
+		if start2 and duration2 then
+			TT.trinket2.cooldown:SetCooldown(start2, duration2)
+		end
+	end
+
+	TT.UpdateTrinket(TT.trinket1, 13)
+	TT.UpdateTrinket(TT.trinket2, 14)
+	TT.UpdateTrinketLayout()
+	TT.UpdateSizes()
+end
+
+function TT.UpdateSizes()
+	if InCombatLockdown() then
+		return
+	end
+
+	local size = TTDB.iconSize
+	TT.trinket1:SetSize(size, size)
+	TT.trinket2:SetSize(size, size)
+end
+
+function TT.UpdateTrinketLayout()
+	if InCombatLockdown() then
+		return
+	end
+
+	local visible1 = TT.trinket1:IsShown()
+	local visible2 = TT.trinket2:IsShown()
+
+	if visible1 and not visible2 then
+		TT.trinket1:ClearAllPoints()
+		TT.trinket1:SetPoint("CENTER", TT.container, "CENTER", 0, 0)
+	elseif visible2 and not visible1 then
+		TT.trinket2:ClearAllPoints()
+		TT.trinket2:SetPoint("CENTER", TT.container, "CENTER", 0, 0)
+	elseif visible1 and visible2 then
+		if TTDB.layout == "vertical" then
+			TT.trinket1:ClearAllPoints()
+			TT.trinket1:SetPoint("TOP", TT.container, "TOP", 0, -3)
+			TT.trinket2:ClearAllPoints()
+			TT.trinket2:SetPoint("TOP", TT.trinket1, "BOTTOM", 0, -TTDB.gap)
+		else
+			TT.trinket2:ClearAllPoints()
+			TT.trinket2:SetPoint("LEFT", TT.container, "LEFT", 3, 0)
+			TT.trinket1:ClearAllPoints()
+			TT.trinket1:SetPoint("LEFT", TT.trinket2, "RIGHT", TTDB.gap, 0)
+		end
+	end
+	TT.UpdateSizes()
+end
+
+-- New function for clickable trinkets --
+
+function TT.UpdateClickToUse()
+	if InCombatLockdown() then
+		return
+	end
+
+	if TTDB.clickToUse then
+		TT.trinket1:SetAttribute("type", "macro")
+		TT.trinket1:SetAttribute("macrotext", "/use 13")
+		TT.trinket2:SetAttribute("type", "macro")
+		TT.trinket2:SetAttribute("macrotext", "/use 14")
+	else
+		TT.trinket1:SetAttribute("type", nil)
+		TT.trinket2:SetAttribute("type", nil)
+	end
+end
